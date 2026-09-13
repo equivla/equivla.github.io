@@ -1,0 +1,975 @@
+{
+  "_readme": [
+    "Toàn bộ nội dung trang EquiVLA. Sửa file này rồi chạy: python3 build.py  ->  ghi đè index.html",
+    "Cú pháp inline dùng được trong mọi trường text:",
+    "  **đậm**            -> <strong>",
+    "  *nghiêng*          -> <em>",
+    "  @@nhấn mạnh@@      -> chữ đậm màu accent (xanh)",
+    "  ##+18pp##          -> chữ đậm màu xanh lá (dùng cho số cải thiện)",
+    "  `z^{eq}`           -> font mono màu accent, ^{...} = superscript",
+    "  $...$ / $$...$$    -> công thức LaTeX (MathJax), KHÔNG bị đụng tới",
+    "  HTML thô cũng dùng được nếu cần trường hợp đặc biệt",
+    "Lưu ý JSON: dấu \\ trong LaTeX phải viết thành \\\\ (vd \\\\rho, \\\\approx)."
+  ],
+  "theme": {
+    "accent": "#2A6FDB",
+    "accent_bg": "#eef4fe",
+    "green": "#1f8a5b",
+    "ink": "#15171d",
+    "body": "#1a1d24",
+    "muted": "#5b6170",
+    "line": "#ececf0"
+  },
+  "nav": {
+    "brand": {
+      "prefix": "Equi",
+      "accent": "VLA"
+    },
+    "links": [
+      {
+        "label": "Abstract",
+        "href": "#abstract"
+      },
+      {
+        "label": "Method",
+        "href": "#method"
+      },
+      {
+        "label": "Results",
+        "href": "#results"
+      },
+      {
+        "label": "Video",
+        "href": "#video"
+      }
+    ]
+  },
+  "hero": {
+    "badge": "Vision–Language–Action · SO(2) Equivariance",
+    "title": "EquiVLA: Integrating SO(2) Equivariance into Pretrained Vision–Language–Action Models",
+    "tagline": "Adding rotational structure to pretrained VLAs — while retaining their vision–language weights.",
+    "authors": "Anonymous Authors",
+    "venue": "Under review",
+    "buttons": [
+      {
+        "icon": "📄",
+        "label": "Paper",
+        "note": "soon",
+        "href": null,
+        "variant": "primary"
+      },
+      {
+        "icon": "💻",
+        "label": "Code",
+        "note": "soon",
+        "href": null,
+        "variant": "secondary"
+      },
+      {
+        "icon": "▶",
+        "label": "Video",
+        "note": null,
+        "href": "#video",
+        "variant": "secondary"
+      }
+    ]
+  },
+  "teaser": {
+    "src": "figures/introduction/EquiVLA_teaser_square.pdf",
+    "aspect_ratio": "456 / 348",
+    "max_width": 720,
+    "caption": "**Figure 1.** EquiVLA integrates $SO(2)$ equivariance into pretrained VLA models. It preserves pretrained VLM weights, improves real-robot success by 18 percentage points, and reduces measured equivariance error by 27.3×."
+  },
+  "stats": [
+    {
+      "value": "92.6%",
+      "caption": "LIBERO avg success ##(+14.5pp)## vs. GR00T N1.5"
+    },
+    {
+      "value": "84.5%",
+      "caption": "LIBERO success with only @@40%@@ of demonstrations"
+    },
+    {
+      "value": "27.3×",
+      "caption": "lower measured equivariance error on $C_8$ rotations"
+    },
+    {
+      "value": "54→72%",
+      "caption": "Mobile ALOHA real-robot success ##(+18pp)##"
+    }
+  ],
+  "abstract": {
+    "id": "abstract",
+    "heading": "Abstract",
+    "paragraphs": [
+      "Vision–Language–Action (VLA) models benefit from large-scale pretraining but generally do not encode how observations and actions transform under planar rotations, and therefore must learn robustness to object-pose variation from data. We present **EquiVLA**, a modular approach for adding rotational equivariance to pretrained VLAs with a vision–language backbone and a flow-matching Diffusion Transformer action head while retaining the pretrained vision–language weights.",
+      "EquiVLA introduces **EquiPerceptor**, which applies token-level Frame Averaging to spatial ViT features, and **EquiActor**, which replaces the original action head with an equivariant flow-matching Diffusion Transformer. Designed around $SO(2)$ scene rotations and implemented over a finite cyclic subgroup, the two modules provide approximate end-to-end equivariance from observations to predicted actions.",
+      "Instantiated on GR00T N1.5, EquiVLA improves LIBERO success by @@+14.5 pp@@ under relative control. With only @@40%@@ of the LIBERO demonstrations, it reaches @@84.5%@@, exceeding the baseline's 78.1% with the full dataset. It also reduces measured equivariance error by @@27.3×@@, improves average success by @@+10.7 pp@@ on tested unseen scene rotations, raises MimicGen average success from @@26.5% to 48.5%@@, improves CALVIN, and increases Mobile ALOHA real-robot success from @@54% to 72%@@."
+    ]
+  },
+  "method": {
+    "id": "method",
+    "heading": "Method Overview",
+    "blocks": [
+      {
+        "type": "paragraph",
+        "variant": "body",
+        "margin_bottom": 28,
+        "text": "EquiVLA adds planar rotational structure to VLA architectures through two composable modules. In the pretrained setting, it retains the VLM weights while replacing the original action head. We use $C_8 \\leq SO(2)$ by default as an accuracy–latency trade-off."
+      },
+      {
+        "type": "figure_pdf",
+        "src": "figures/method/overview-h.pdf",
+        "aspect_ratio": "688 / 413",
+        "caption": "**Figure 2.** EquiVLA architecture. EquiPerceptor produces equivariant and invariant visual streams while preserving the pretrained VLM; EquiActor predicts equivariant action chunks with a flow-matching Diffusion Transformer."
+      },
+      {
+        "type": "card",
+        "icon": "🔭",
+        "title": "EquiPerceptor",
+        "subtitle": "— Approximate $SO(2)$-Equivariant Visual Representations",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "EquiPerceptor extends Frame Averaging from globally pooled vectors to spatially-indexed ViT patch token sequences. When the input image is rotated, patch tokens are displaced in the grid, so naive averaging destroys spatial localization. EquiPerceptor applies the inverse group action jointly at two levels: a spatial permutation $\\tau(h^{-1})$ that maps each displaced token back to its canonical patch position, and a feature-space transformation $\\rho_{\\text{reg}}(h^{-1})$ in the regular representation of $G$."
+          },
+          {
+            "type": "paragraph",
+            "text": "This yields two streams:"
+          },
+          {
+            "type": "defs",
+            "items": [
+              {
+                "term": "z^{eq}",
+                "desc": "equivariant token map — transforms with the scene"
+              },
+              {
+                "term": "z^{inv}",
+                "desc": "invariant token map — rotation-independent"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "last": true,
+            "text": "`z^{inv}` is fed into the frozen VLM alongside wrist-camera and language tokens to produce language-grounded context tokens `z^{ctx}`. An **Equivariant Adapter** fuses `z^{eq}` and `z^{ctx}` through learned gates that depend only on invariant quantities, producing the final context `z^{out}` while preserving equivariance."
+          }
+        ]
+      },
+      {
+        "type": "card",
+        "icon": "🎯",
+        "title": "EquiActor",
+        "subtitle": "— Equivariant Flow-Matching DiT over $C_u$",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "EquiActor replaces the standard DiT action head with a $C_u$-equivariant counterpart built with steerable layers in regular-representation space. State and noisy-action encoders, cross- and self-attention, feed-forward blocks, and the action decoder all preserve equivariance. Attention scores use the geometric inner product $\\langle q, k\\rangle = \\sum_{g} q[g]\\cdot k[g]$, which is invariant to the cyclic permutation induced by the regular representation."
+          },
+          {
+            "type": "callout",
+            "blocks": [
+              {
+                "type": "paragraph",
+                "text": "**Action representation.** End-effector position and orientation transform as $SO(2)$ vectors under scene rotation, while gripper width is rotation-invariant. The group action on the action vector decomposes into irreducible representations depending on the control mode:"
+              },
+              {
+                "type": "list",
+                "items": [
+                  "**Absolute control:**&nbsp; $\\rho_1^{3} \\oplus (\\rho_1 \\oplus \\rho_0) \\oplus \\rho_0$ — where $\\rho_1^{3}$ encodes the 6D end-effector rotation as three 2D vector pairs, $\\rho_1 \\oplus \\rho_0$ encodes $xy$ translation and $z$ height, and $\\rho_0$ encodes gripper width.",
+                  "**Relative control:**&nbsp; $\\rho_0^{6} \\oplus \\rho_1^{4} \\oplus \\rho_2$ — where $\\rho_0^{6}$ encodes invariant scalar offsets and $\\rho_2$ captures the frequency-2 component from quadratic terms in the relative rotation decomposition."
+                ],
+                "color": "#3a4150"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "last": true,
+            "text": "EquiActor is trained from scratch, as steerable layers are structurally incompatible with unconstrained pretrained weights. The equivariant inductive bias compensates for the loss of pretrained action-head initialization."
+          }
+        ]
+      },
+      {
+        "type": "highlight_box",
+        "title": "End-to-End Equivariance Guarantee",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Together, EquiPerceptor and EquiActor establish an approximate $SO(2)$ equivariance chain:"
+          },
+          {
+            "type": "math",
+            "tex": "\\hat{a}_t\\big(g \\cdot o_t,\\; \\rho_s(g)\\, s_t\\big) \\;\\approx\\; \\rho_a(g) \\cdot \\hat{a}_t\\big(o_t, s_t\\big) \\qquad \\forall\\, g \\in C_u"
+          },
+          {
+            "type": "paragraph",
+            "variant": "small",
+            "text": "EquiActor's velocity field is exactly $G$-equivariant when its context transforms as specified. The full relation is approximate because discrete image rotations and nearest-neighbor alignment can move rotated patch centers off the ViT grid; alignment is exact for grid-preserving rotations such as $C_4$ on a square grid."
+          }
+        ]
+      }
+    ]
+  },
+  "results": {
+    "id": "results",
+    "heading": "Results",
+    "blocks": [
+      {
+        "type": "heading",
+        "text": "LIBERO Benchmark",
+        "size": 22
+      },
+      {
+        "type": "paragraph",
+        "variant": "caption",
+        "text": "4 suites (LIBERO-10, Goal, Object, Spatial) × 10 tasks × 50 rollouts; per-suite training; relative and absolute EEF control; replanning every timestep; averaged over 2 seeds."
+      },
+      {
+        "type": "table",
+        "min_width": 620,
+        "padding": 10,
+        "columns": [
+          {
+            "key": "method",
+            "label": "Method",
+            "align": "left"
+          },
+          {
+            "key": "ctrl",
+            "label": "Ctrl",
+            "align": "center",
+            "style": "muted-small"
+          },
+          {
+            "key": "l10",
+            "label": "LIBERO-10"
+          },
+          {
+            "key": "goal",
+            "label": "Goal"
+          },
+          {
+            "key": "object",
+            "label": "Object"
+          },
+          {
+            "key": "spatial",
+            "label": "Spatial"
+          },
+          {
+            "key": "avg",
+            "label": "Avg ↑",
+            "emphasis": true
+          }
+        ],
+        "rows": [
+          {
+            "cells": {
+              "method": "GR00T N1.5 (baseline)",
+              "ctrl": "Rel.",
+              "l10": "72.0",
+              "goal": "75.0",
+              "object": "83.4",
+              "spatial": "82.0",
+              "avg": "78.1"
+            }
+          },
+          {
+            "highlight": true,
+            "cells": {
+              "method": "EquiVLA (ours)",
+              "ctrl": "Rel.",
+              "l10": "87.6",
+              "goal": "89.4",
+              "object": "98.0",
+              "spatial": "95.4",
+              "avg": "92.6"
+            }
+          },
+          {
+            "cells": {
+              "method": "GR00T N1.5 (baseline)",
+              "ctrl": "Abs.",
+              "l10": "52.0",
+              "goal": "55.2",
+              "object": "74.6",
+              "spatial": "68.6",
+              "avg": "62.6"
+            }
+          },
+          {
+            "highlight": true,
+            "cells": {
+              "method": "EquiVLA (ours)",
+              "ctrl": "Abs.",
+              "l10": "73.6",
+              "goal": "70.4",
+              "object": "83.0",
+              "spatial": "77.6",
+              "avg": "76.1"
+            }
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "variant": "note",
+        "margin_bottom": 40,
+        "text": "Under matched training settings, EquiVLA improves average success from **78.1% to 92.6% (+14.5 pp)** with relative control and from **62.6% to 76.1% (+13.5 pp)** with absolute control. Component effects are reported separately in the ablation section below."
+      },
+      {
+        "type": "heading",
+        "text": "Sample Efficiency on LIBERO",
+        "size": 22
+      },
+      {
+        "type": "paragraph",
+        "variant": "note",
+        "margin_bottom": 40,
+        "text": "EquiVLA outperforms GR00T N1.5 when trained with **10%, 40%, and 100%** of the demonstrations, with gains of **+1.8, +10.6, and +14.5 pp**, respectively. With only **40% of the data**, EquiVLA reaches @@84.5%@@, exceeding the baseline's **78.1%** with the full dataset — a **2.5× reduction in demonstrations** for better success."
+      },
+      {
+        "type": "heading",
+        "text": "MimicGen Benchmark",
+        "size": 22
+      },
+      {
+        "type": "paragraph",
+        "variant": "caption",
+        "text": "Four task variants with object position and orientation variation; 100 demonstrations and 50 evaluation rollouts per task; same pretrained backbone and matched training settings."
+      },
+      {
+        "type": "table",
+        "min_width": 680,
+        "padding": 10,
+        "columns": [
+          {
+            "key": "method",
+            "label": "Method",
+            "align": "left"
+          },
+          {
+            "key": "hammer",
+            "label": "Hammer<br>Cleanup D1"
+          },
+          {
+            "key": "square",
+            "label": "Square<br>D2"
+          },
+          {
+            "key": "stack",
+            "label": "Stack<br>D1"
+          },
+          {
+            "key": "stack_three",
+            "label": "Stack<br>Three D1"
+          },
+          {
+            "key": "avg",
+            "label": "Avg ↑",
+            "emphasis": true
+          }
+        ],
+        "rows": [
+          {
+            "cells": {
+              "method": "GR00T N1.5 (baseline)",
+              "hammer": "30",
+              "square": "6",
+              "stack": "56",
+              "stack_three": "14",
+              "avg": "26.5"
+            }
+          },
+          {
+            "highlight": true,
+            "cells": {
+              "method": "EquiVLA (ours)",
+              "hammer": "54",
+              "square": "16",
+              "stack": "86",
+              "stack_three": "38",
+              "avg": "48.5"
+            }
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "variant": "note",
+        "margin_bottom": 40,
+        "text": "EquiVLA improves all four task variants by **+24, +10, +30, and +24 pp**, raising average success from **26.5% to 48.5% (+22.0 pp)**."
+      },
+      {
+        "type": "heading",
+        "text": "Rotational Generalization and Equivariance Error",
+        "size": 22
+      },
+      {
+        "type": "paragraph",
+        "variant": "caption",
+        "text": "Equivariance error is measured over 500 LIBERO observations and every rotation in $C_8$. Generalization is evaluated on LIBERO-Object at 11 scene rotations from −25° to +25°, while models are trained only at 0° without rotation augmentation."
+      },
+      {
+        "type": "table",
+        "min_width": 650,
+        "padding": 10,
+        "columns": [
+          {
+            "key": "method",
+            "label": "Method",
+            "align": "left"
+          },
+          {
+            "key": "success",
+            "label": "Avg rotated-scene success ↑"
+          },
+          {
+            "key": "error",
+            "label": "$\\epsilon_{\\mathrm{eq}}$ (mean ± std) ↓"
+          },
+          {
+            "key": "latency",
+            "label": "ms/step ↓"
+          }
+        ],
+        "rows": [
+          {
+            "cells": {
+              "method": "GR00T N1.5 (baseline)",
+              "success": "33.0%",
+              "error": "7.754 ± 3.572",
+              "latency": "64"
+            }
+          },
+          {
+            "cells": {
+              "method": "+ EquiActor",
+              "success": "40.3%",
+              "error": "0.837 ± 0.738",
+              "latency": "147"
+            }
+          },
+          {
+            "highlight": true,
+            "cells": {
+              "method": "EquiVLA (ours)",
+              "success": "43.7%",
+              "error": "0.284 ± 0.134",
+              "latency": "194"
+            }
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "variant": "note",
+        "margin_bottom": 40,
+        "text": "The full model reduces measured equivariance error by **27.3×**. Across all 11 rotations it improves average success from **33.0% to 43.7% (+10.7 pp)**; at +10°, EquiVLA reaches **54.4%** while the baseline falls to **25.0%**."
+      },
+      {
+        "type": "heading",
+        "text": "CALVIN ABCD→D Benchmark",
+        "size": 22
+      },
+      {
+        "type": "paragraph",
+        "variant": "caption",
+        "text": "Single-frame observations (image + proprioception); trained on the combined A, B, C, D environments; in-distribution evaluation on environment D; 1000 instruction chains of up to 5 sequential tasks."
+      },
+      {
+        "type": "table",
+        "min_width": 560,
+        "padding": 10,
+        "columns": [
+          {
+            "key": "method",
+            "label": "Method",
+            "align": "left"
+          },
+          {
+            "key": "t1",
+            "label": "T1"
+          },
+          {
+            "key": "t2",
+            "label": "T2"
+          },
+          {
+            "key": "t3",
+            "label": "T3"
+          },
+          {
+            "key": "t4",
+            "label": "T4"
+          },
+          {
+            "key": "t5",
+            "label": "T5"
+          },
+          {
+            "key": "avg",
+            "label": "Avg ↑",
+            "emphasis": true
+          }
+        ],
+        "rows": [
+          {
+            "cells": {
+              "method": "HULC (multi-frame†)",
+              "t1": "88.9",
+              "t2": "73.3",
+              "t3": "58.7",
+              "t4": "47.5",
+              "t5": "38.3",
+              "avg": "3.07"
+            }
+          },
+          {
+            "cells": {
+              "method": "MoDE (multi-frame†)",
+              "t1": "97.1",
+              "t2": "92.5",
+              "t3": "87.9",
+              "t4": "83.5",
+              "t5": "77.9",
+              "avg": "4.39"
+            }
+          },
+          {
+            "cells": {
+              "method": "GR00T N1.5 (baseline)",
+              "t1": "89.0",
+              "t2": "79.2",
+              "t3": "68.7",
+              "t4": "59.4",
+              "t5": "48.5",
+              "avg": "3.45"
+            }
+          },
+          {
+            "highlight": true,
+            "cells": {
+              "method": "EquiVLA (ours)",
+              "t1": "95.0",
+              "t2": "88.5",
+              "t3": "81.1",
+              "t4": "73.8",
+              "t5": "64.3",
+              "avg": "4.03"
+            }
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "variant": "footnote",
+        "text": "† Multi-frame baselines use temporal history; not directly comparable."
+      },
+      {
+        "type": "paragraph",
+        "variant": "note",
+        "margin_bottom": 40,
+        "text": "EquiVLA increases average sequence length from **3.45 to 4.03 (+0.58)** and improves success at every position in the instruction chain. The largest gain occurs at Task 5, from **48.5% to 64.3% (+15.8 pp)**."
+      },
+      {
+        "type": "heading",
+        "text": "Real Robot — Mobile ALOHA",
+        "size": 22
+      },
+      {
+        "type": "paragraph",
+        "variant": "caption",
+        "text": "5 tabletop manipulation tasks on Mobile ALOHA; 150 teleoperated demonstrations each; 20 trials per task and model; fine-tuned from the same GR00T N1.5 3B checkpoint. Four tasks use the right arm only; Shorts Folding is bimanual."
+      },
+      {
+        "type": "table",
+        "min_width": 480,
+        "padding": 11,
+        "columns": [
+          {
+            "key": "task",
+            "label": "Task",
+            "align": "left"
+          },
+          {
+            "key": "baseline",
+            "label": "GR00T N1.5"
+          },
+          {
+            "key": "ours",
+            "label": "EquiVLA (ours)",
+            "color": "accent",
+            "weight": 600,
+            "emphasis": true
+          },
+          {
+            "key": "delta",
+            "label": "Δ",
+            "color": "green",
+            "weight": 500
+          }
+        ],
+        "rows": [
+          {
+            "cells": {
+              "task": "Banana in Pot",
+              "baseline": "12/20 (60%)",
+              "ours": "15/20 (75%)",
+              "delta": "+15pp"
+            }
+          },
+          {
+            "cells": {
+              "task": "Block Storing",
+              "baseline": "9/20 (45%)",
+              "ours": "11/20 (55%)",
+              "delta": "+10pp"
+            }
+          },
+          {
+            "cells": {
+              "task": "House Building",
+              "baseline": "3/20 (15%)",
+              "ours": "10/20 (50%)",
+              "delta": {
+                "text": "+35pp",
+                "bold": true
+              }
+            }
+          },
+          {
+            "cells": {
+              "task": "Letter Aligning",
+              "baseline": "13/20 (65%)",
+              "ours": "19/20 (95%)",
+              "delta": {
+                "text": "+30pp",
+                "bold": true
+              }
+            }
+          },
+          {
+            "cells": {
+              "task": "Shorts Folding",
+              "baseline": "17/20 (85%)",
+              "ours": "17/20 (85%)",
+              "delta": {
+                "text": "0pp",
+                "muted": true
+              }
+            }
+          },
+          {
+            "total": true,
+            "cells": {
+              "task": "Average",
+              "baseline": "54%",
+              "ours": "72%",
+              "delta": "+18pp"
+            }
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "margin_bottom": 28,
+        "items": [
+          "**High rotational variation:** House Building and Letter Aligning gain **+35 pp** and **+30 pp**, averaging +32.5 pp across the group.",
+          "**Intermediate variation:** Banana in Pot and Block Storing gain **+15 pp** and **+10 pp**, averaging +12.5 pp.",
+          "**Low variation:** Shorts Folding remains at 85% for both methods. The high-to-intermediate-to-low ordering is consistent with larger benefits when grasps and placements must adapt to object pose."
+        ]
+      },
+      {
+        "type": "task_gallery",
+        "caption": "**Figure 5.** Real-robot tasks on Mobile ALOHA. For each task the first and last frames show the initial and goal states. Success rates: EquiVLA (blue) vs. GR00T N1.5 over 20 trials.",
+        "rows": [
+          {
+            "columns": 2,
+            "items": [
+              {
+                "title": "Banana in Pot",
+                "ours": "75%",
+                "baseline": "60%",
+                "images": [
+                  {
+                    "src": "figures/experiment/1_kitchen_place_banana.jpeg",
+                    "alt": "Banana in Pot — frame 1"
+                  },
+                  {
+                    "src": "figures/experiment/4_kitchen_place_banana.jpeg",
+                    "alt": "Banana in Pot — frame 2"
+                  },
+                  {
+                    "src": "figures/experiment/6_kitchen_place_banana.jpeg",
+                    "alt": "Banana in Pot — final"
+                  }
+                ]
+              },
+              {
+                "title": "Block Storing",
+                "ours": "55%",
+                "baseline": "45%",
+                "images": [
+                  {
+                    "src": "figures/experiment/1_drawer_placing.jpeg",
+                    "alt": "Block Storing — frame 1"
+                  },
+                  {
+                    "src": "figures/experiment/2_drawer_placing.jpeg",
+                    "alt": "Block Storing — frame 2"
+                  },
+                  {
+                    "src": "figures/experiment/6_drawer_placing.jpeg",
+                    "alt": "Block Storing — final"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "columns": 3,
+            "items": [
+              {
+                "title": "House Building",
+                "ours": "50%",
+                "baseline": "15%",
+                "images": [
+                  {
+                    "src": "figures/experiment/1_stack_house.jpeg",
+                    "alt": "House Building — initial"
+                  },
+                  {
+                    "src": "figures/experiment/6_stack_house.jpeg",
+                    "alt": "House Building — final"
+                  }
+                ]
+              },
+              {
+                "title": "Letter Aligning",
+                "ours": "95%",
+                "baseline": "65%",
+                "images": [
+                  {
+                    "src": "figures/experiment/1_letter_align.jpeg",
+                    "alt": "Letter Aligning — initial"
+                  },
+                  {
+                    "src": "figures/experiment/6_letter_align.jpeg",
+                    "alt": "Letter Aligning — final"
+                  }
+                ]
+              },
+              {
+                "title": "Shorts Folding",
+                "ours": "85%",
+                "baseline": "85%",
+                "images": [
+                  {
+                    "src": "figures/experiment/1_short_folding.jpeg",
+                    "alt": "Shorts Folding — initial"
+                  },
+                  {
+                    "src": "figures/experiment/6_short_folding.jpeg",
+                    "alt": "Shorts Folding — final"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "text": "Ablation Highlights",
+        "size": 22,
+        "margin_bottom": 10
+      },
+      {
+        "type": "paragraph",
+        "variant": "caption",
+        "text": "LIBERO success under relative control. The ViT is frozen unless marked unfrozen; all runs use the same pretrained checkpoint and matched training settings."
+      },
+      {
+        "type": "table",
+        "min_width": 650,
+        "padding": 10,
+        "columns": [
+          {
+            "key": "method",
+            "label": "Method",
+            "align": "left"
+          },
+          {
+            "key": "l10",
+            "label": "LIBERO-10"
+          },
+          {
+            "key": "goal",
+            "label": "Goal"
+          },
+          {
+            "key": "object",
+            "label": "Object"
+          },
+          {
+            "key": "spatial",
+            "label": "Spatial"
+          },
+          {
+            "key": "avg",
+            "label": "Avg ↑",
+            "emphasis": true
+          }
+        ],
+        "rows": [
+          {
+            "cells": {
+              "method": "GR00T N1.5",
+              "l10": "72.0",
+              "goal": "75.0",
+              "object": "83.4",
+              "spatial": "82.0",
+              "avg": "78.1"
+            }
+          },
+          {
+            "cells": {
+              "method": "+ re-init. DiT",
+              "l10": "76.0",
+              "goal": "86.6",
+              "object": "90.8",
+              "spatial": "86.2",
+              "avg": "84.9"
+            }
+          },
+          {
+            "cells": {
+              "method": "+ EquiActor",
+              "l10": "82.6",
+              "goal": "88.0",
+              "object": "95.2",
+              "spatial": "98.2",
+              "avg": "91.0"
+            }
+          },
+          {
+            "highlight": true,
+            "cells": {
+              "method": "EquiVLA",
+              "l10": "87.6",
+              "goal": "89.4",
+              "object": "98.0",
+              "spatial": "95.4",
+              "avg": "92.6"
+            }
+          },
+          {
+            "cells": {
+              "method": "GR00T N1.5 (unfrozen)",
+              "l10": "77.4",
+              "goal": "82.8",
+              "object": "81.6",
+              "spatial": "88.4",
+              "avg": "82.5"
+            }
+          },
+          {
+            "highlight": true,
+            "cells": {
+              "method": "EquiVLA (unfrozen)",
+              "l10": "90.0",
+              "goal": "91.4",
+              "object": "96.6",
+              "spatial": "95.2",
+              "avg": "93.3"
+            }
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "variant": "note",
+        "margin_bottom": 40,
+        "text": "A matched-size reinitialized DiT reaches **84.9%**; replacing it with EquiActor raises success to **91.0% (+6.1 pp)**, and adding EquiPerceptor reaches **92.6% (+1.6 pp)**. Unfreezing the ViT raises EquiVLA to **93.3%**, while it still retains a **+10.8 pp** advantage over the unfrozen baseline. For group order, $C_8$ is selected at **92.6% and 194 ms/step**; $C_4$ is 1.0 pp lower but faster (161 ms/step), while $C_{16}$ reaches 94.3% at 25% higher latency than $C_8$."
+      },
+      {
+        "type": "heading",
+        "text": "Per-Task Videos",
+        "size": 20,
+        "margin_bottom": 24
+      },
+      {
+        "type": "video_grid",
+        "title": "Banana in Pot",
+        "columns": 2,
+        "videos": [
+          "video/banana_in_pot/episode_000030.mp4",
+          "video/banana_in_pot/episode_000031.mp4",
+          "video/banana_in_pot/episode_000032.mp4",
+          "video/banana_in_pot/episode_000033.mp4"
+        ]
+      },
+      {
+        "type": "video_grid",
+        "title": "Block Storing",
+        "columns": 2,
+        "videos": [
+          "video/block_storing/episode_000019.mp4",
+          "video/block_storing/episode_000021.mp4",
+          "video/block_storing/episode_000027.mp4",
+          "video/block_storing/episode_000028.mp4"
+        ]
+      },
+      {
+        "type": "video_grid",
+        "title": "House Building",
+        "columns": 2,
+        "videos": [
+          "video/house_building/episode_000081.mp4",
+          "video/house_building/episode_000084.mp4",
+          "video/house_building/episode_000088.mp4",
+          "video/house_building/episode_000090.mp4"
+        ]
+      },
+      {
+        "type": "video_grid",
+        "title": "Letter Aligning",
+        "columns": 2,
+        "videos": [
+          "video/letter_aligning/episode_000047.mp4",
+          "video/letter_aligning/episode_000049.mp4",
+          "video/letter_aligning/episode_000051.mp4",
+          "video/letter_aligning/episode_000059.mp4"
+        ]
+      },
+      {
+        "type": "video_grid",
+        "title": "Shorts Folding",
+        "columns": 2,
+        "videos": [
+          "video/shorts_folding/episode_000064.mp4",
+          "video/shorts_folding/episode_000065.mp4",
+          "video/shorts_folding/episode_000067.mp4",
+          "video/shorts_folding/episode_000074.mp4"
+        ],
+        "margin_bottom": 8
+      }
+    ]
+  },
+  "video_section": {
+    "id": "video",
+    "heading": "Video",
+    "src": "https://github.com/equivla/equivla/releases/download/v1.0/EquiVLA.mp4",
+    "caption": "**Video.** Overview of EquiVLA — framework motivation, architecture, and real-robot demonstrations across all five tasks."
+  },
+  "footer": {
+    "brand": {
+      "prefix": "Equi",
+      "accent": "VLA"
+    },
+    "text": "Anonymous submission · under review. Paper and code coming soon."
+  }
+}

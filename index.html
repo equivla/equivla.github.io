@@ -23,6 +23,7 @@
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" id="MathJax-script" async></script>
 </head>
 <body>
+<!-- ĐỪNG SỬA FILE NÀY — nó được sinh ra từ content.json bởi build.py -->
 <div style="font-family: 'Inter', system-ui, sans-serif; color: #1a1d24; background: #ffffff; line-height: 1.65; -webkit-font-smoothing: antialiased;">
 
   <nav style="position: sticky; top: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; padding: 14px 32px; background: rgba(255,255,255,0.82); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid #ececf0;">
@@ -39,9 +40,9 @@
 
     <!-- HERO -->
     <header style="text-align: center; padding: 76px 0 40px;">
-      <div style="display: inline-block; font-size: 12.5px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #2A6FDB; background: #eef4fe; padding: 6px 14px; border-radius: 999px; margin-bottom: 26px;">Vision&ndash;Language&ndash;Action &middot; SO(2) Equivariance</div>
-      <h1 style="font-family: 'Newsreader', serif; font-weight: 600; font-size: 47px; line-height: 1.14; letter-spacing: -0.02em; margin: 0 0 14px; color: #15171d; text-wrap: balance;">EquiVLA: A General Framework for Rotationally Equivariant Vision&ndash;Language&ndash;Action Models</h1>
-      <p style="font-family: 'Newsreader', serif; font-style: italic; font-size: 23px; color: #565c6b; margin: 0 auto 30px; max-width: 620px; line-height: 1.4;">&ldquo;Rotating the workspace should rotate the action &mdash; not require more data.&rdquo;</p>
+      <div style="display: inline-block; font-size: 12.5px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #2A6FDB; background: #eef4fe; padding: 6px 14px; border-radius: 999px; margin-bottom: 26px;">Vision–Language–Action · SO(2) Equivariance</div>
+      <h1 style="font-family: 'Newsreader', serif; font-weight: 600; font-size: 47px; line-height: 1.14; letter-spacing: -0.02em; margin: 0 0 14px; color: #15171d; text-wrap: balance;">EquiVLA: Integrating SO(2) Equivariance into Pretrained Vision–Language–Action Models</h1>
+      <p style="font-family: 'Newsreader', serif; font-style: italic; font-size: 23px; color: #565c6b; margin: 0 auto 30px; max-width: 620px; line-height: 1.4;">Adding rotational structure to pretrained VLAs — while retaining their vision–language weights.</p>
 
       <div style="font-size: 17px; color: #2b2f3a; margin-bottom: 4px;">Anonymous Authors</div>
       <div style="font-size: 14.5px; color: #8a909e; margin-bottom: 30px;">Under review</div>
@@ -49,22 +50,34 @@
       <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px;">
         <span style="display: inline-flex; align-items: center; gap: 8px; padding: 11px 20px; border-radius: 10px; background: #15171d; color: #fff; font-size: 14.5px; font-weight: 500; opacity: 0.5; cursor: not-allowed;">📄 Paper <span style="font-size: 11px; font-weight: 600; opacity: 0.8;">soon</span></span>
         <span style="display: inline-flex; align-items: center; gap: 8px; padding: 11px 20px; border-radius: 10px; background: #fff; border: 1px solid #d9dce3; color: #2b2f3a; font-size: 14.5px; font-weight: 500; opacity: 0.55; cursor: not-allowed;">💻 Code <span style="font-size: 11px; font-weight: 600; color: #8a909e;">soon</span></span>
-        <span style="display: inline-flex; align-items: center; gap: 8px; padding: 11px 20px; border-radius: 10px; background: #fff; border: 1px solid #d9dce3; color: #2b2f3a; font-size: 14.5px; font-weight: 500; opacity: 0.55; cursor: not-allowed;">▶ Video <span style="font-size: 11px; font-weight: 600; color: #8a909e;">soon</span></span>
+        <a href="#video" style="display: inline-flex; align-items: center; gap: 8px; padding: 11px 20px; border-radius: 10px; background: #fff; border: 1px solid #d9dce3; color: #2b2f3a; font-size: 14.5px; font-weight: 500; text-decoration: none;">▶ Video</a>
       </div>
     </header>
 
+    <!-- TEASER -->
+      <figure style="margin: 0 auto 48px; max-width: 720px;">
+        <object data="figures/introduction/EquiVLA_teaser_square.pdf#toolbar=0&navpanes=0&scrollbar=0&view=FitH" type="application/pdf" style="width: 100%; aspect-ratio: 456 / 348; border-radius: 16px; border: 1px solid #e4e8f0; display: block;">
+          <p style="text-align: center; color: #9aa1b1; padding: 40px;">Unable to display PDF. <a href="figures/introduction/EquiVLA_teaser_square.pdf">Download PDF</a></p>
+        </object>
+        <figcaption style="text-align: center; font-size: 14px; color: #7b8294; margin-top: 14px;"><strong style="color: #4a5060;">Figure 1.</strong> EquiVLA integrates $SO(2)$ equivariance into pretrained VLA models. It preserves pretrained VLM weights, improves real-robot success by 18 percentage points, and reduces measured equivariance error by 27.3×.</figcaption>
+      </figure>
+
     <!-- STAT CARDS -->
-    <section style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 8px 0 56px;">
+    <section style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 8px 0 56px;">
       <div style="text-align: center; padding: 24px 16px; border: 1px solid #ececf0; border-radius: 14px; background: #fafbfc;">
         <div style="font-family: 'Newsreader', serif; font-size: 38px; font-weight: 600; color: #2A6FDB; line-height: 1;">92.6%</div>
         <div style="font-size: 13px; color: #6b7180; margin-top: 8px;">LIBERO avg success <span style="color: #1f8a5b; font-weight: 600;">(+14.5pp)</span> vs. GR00T N1.5</div>
       </div>
       <div style="text-align: center; padding: 24px 16px; border: 1px solid #ececf0; border-radius: 14px; background: #fafbfc;">
-        <div style="font-family: 'Newsreader', serif; font-size: 38px; font-weight: 600; color: #2A6FDB; line-height: 1;">4.03</div>
-        <div style="font-size: 13px; color: #6b7180; margin-top: 8px;">CALVIN ABCD&rarr;D avg seq. length <span style="color: #1f8a5b; font-weight: 600;">(+0.58)</span></div>
+        <div style="font-family: 'Newsreader', serif; font-size: 38px; font-weight: 600; color: #2A6FDB; line-height: 1;">84.5%</div>
+        <div style="font-size: 13px; color: #6b7180; margin-top: 8px;">LIBERO success with only <strong style="color: #2A6FDB;">40%</strong> of demonstrations</div>
       </div>
       <div style="text-align: center; padding: 24px 16px; border: 1px solid #ececf0; border-radius: 14px; background: #fafbfc;">
-        <div style="font-family: 'Newsreader', serif; font-size: 38px; font-weight: 600; color: #2A6FDB; line-height: 1;">54&rarr;72%</div>
+        <div style="font-family: 'Newsreader', serif; font-size: 38px; font-weight: 600; color: #2A6FDB; line-height: 1;">27.3×</div>
+        <div style="font-size: 13px; color: #6b7180; margin-top: 8px;">lower measured equivariance error on $C_8$ rotations</div>
+      </div>
+      <div style="text-align: center; padding: 24px 16px; border: 1px solid #ececf0; border-radius: 14px; background: #fafbfc;">
+        <div style="font-family: 'Newsreader', serif; font-size: 38px; font-weight: 600; color: #2A6FDB; line-height: 1;">54→72%</div>
         <div style="font-size: 13px; color: #6b7180; margin-top: 8px;">Mobile ALOHA real-robot success <span style="color: #1f8a5b; font-weight: 600;">(+18pp)</span></div>
       </div>
     </section>
@@ -72,79 +85,70 @@
     <!-- ABSTRACT -->
     <section id="abstract" style="margin-bottom: 64px; scroll-margin-top: 80px;">
       <h2 style="font-family: 'Newsreader', serif; font-size: 13px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #2A6FDB; margin: 0 0 18px;">Abstract</h2>
-      <p style="font-size: 18px; color: #2b303c; margin: 0 0 16px; line-height: 1.72;">Vision&ndash;Language&ndash;Action (VLA) models have emerged as a powerful paradigm for generalist robot manipulation, yet they lack geometric inductive biases: policies trained at specific orientations require substantially more data to generalize across rotational configurations. We present <strong>EquiVLA</strong>, the first general framework for end-to-end $SO(2)$-equivariant VLA models, applicable to any architecture coupling a frozen vision&ndash;language backbone with a flow-matching Diffusion Transformer action head.</p>
-      <p style="font-size: 18px; color: #2b303c; margin: 0 0 16px; line-height: 1.72;">EquiVLA introduces <strong>EquiPerceptor</strong>, which produces approximately $SO(2)$-equivariant visual representations from frozen ViT features; and <strong>EquiActor</strong>, an exactly $SO(2)$-equivariant flow-matching Diffusion Transformer action head. Together, they establish an approximate $SO(2)$ equivariance chain from camera observations to predicted action sequences.</p>
-      <p style="font-size: 18px; color: #2b303c; margin: 0; line-height: 1.72;">Instantiated on GR00T N1.5 and evaluated across four LIBERO suites, CALVIN ABCD&rarr;D, and five real-robot tasks on Mobile ALOHA, EquiVLA achieves <strong style="color: #2A6FDB;">92.6%</strong> average success on LIBERO (vs. 78.1% baseline), an average sequence length of <strong style="color: #2A6FDB;">4.03</strong> on CALVIN (vs. 3.45), and improves real-robot success from <strong style="color: #2A6FDB;">54% to 72%</strong>.</p>
+      <p style="font-size: 18px; color: #2b303c; margin: 0 0 16px; line-height: 1.72;">Vision–Language–Action (VLA) models benefit from large-scale pretraining but generally do not encode how observations and actions transform under planar rotations, and therefore must learn robustness to object-pose variation from data. We present <strong>EquiVLA</strong>, a modular approach for adding rotational equivariance to pretrained VLAs with a vision–language backbone and a flow-matching Diffusion Transformer action head while retaining the pretrained vision–language weights.</p>
+      <p style="font-size: 18px; color: #2b303c; margin: 0 0 16px; line-height: 1.72;">EquiVLA introduces <strong>EquiPerceptor</strong>, which applies token-level Frame Averaging to spatial ViT features, and <strong>EquiActor</strong>, which replaces the original action head with an equivariant flow-matching Diffusion Transformer. Designed around $SO(2)$ scene rotations and implemented over a finite cyclic subgroup, the two modules provide approximate end-to-end equivariance from observations to predicted actions.</p>
+      <p style="font-size: 18px; color: #2b303c; margin: 0; line-height: 1.72;">Instantiated on GR00T N1.5, EquiVLA improves LIBERO success by <strong style="color: #2A6FDB;">+14.5 pp</strong> under relative control. With only <strong style="color: #2A6FDB;">40%</strong> of the LIBERO demonstrations, it reaches <strong style="color: #2A6FDB;">84.5%</strong>, exceeding the baseline's 78.1% with the full dataset. It also reduces measured equivariance error by <strong style="color: #2A6FDB;">27.3×</strong>, improves average success by <strong style="color: #2A6FDB;">+10.7 pp</strong> on tested unseen scene rotations, raises MimicGen average success from <strong style="color: #2A6FDB;">26.5% to 48.5%</strong>, improves CALVIN, and increases Mobile ALOHA real-robot success from <strong style="color: #2A6FDB;">54% to 72%</strong>.</p>
     </section>
 
     <!-- METHOD -->
     <section id="method" style="margin-bottom: 64px; scroll-margin-top: 80px;">
       <h2 style="font-family: 'Newsreader', serif; font-size: 13px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #2A6FDB; margin: 0 0 18px;">Method Overview</h2>
-      <p style="font-size: 18px; color: #2b303c; margin: 0 0 28px; line-height: 1.72;">EquiVLA imposes $SO(2)$ equivariance on VLA architectures through two composable modules &mdash; with no modification to pretrained VLM weights.</p>
-
+      <p style="font-size: 18px; color: #2b303c; margin: 0 0 28px; line-height: 1.72;">EquiVLA adds planar rotational structure to VLA architectures through two composable modules. In the pretrained setting, it retains the VLM weights while replacing the original action head. We use $C_8 \leq SO(2)$ by default as an accuracy–latency trade-off.</p>
       <figure style="margin: 0 0 36px;">
-        <object data="figures/method/EquiVLA_20260521.pdf#toolbar=0&navpanes=0&scrollbar=0&view=FitH" type="application/pdf" style="width: 100%; aspect-ratio: 604 / 328; border-radius: 16px; border: 1px solid #e4e8f0; display: block;">
-          <p style="text-align: center; color: #9aa1b1; padding: 40px;">Unable to display PDF. <a href="figures/method/EquiVLA_20260521.pdf">Download PDF</a></p>
+        <object data="figures/method/overview-h.pdf#toolbar=0&navpanes=0&scrollbar=0&view=FitH" type="application/pdf" style="width: 100%; aspect-ratio: 688 / 413; border-radius: 16px; border: 1px solid #e4e8f0; display: block;">
+          <p style="text-align: center; color: #9aa1b1; padding: 40px;">Unable to display PDF. <a href="figures/method/overview-h.pdf">Download PDF</a></p>
         </object>
-        <figcaption style="text-align: center; font-size: 14px; color: #7b8294; margin-top: 14px;"><strong style="color: #4a5060;">Figure 2.</strong> The EquiVLA pipeline. An approximate $SO(2)$ equivariance chain is preserved from camera observations to predicted actions.</figcaption>
+        <figcaption style="text-align: center; font-size: 14px; color: #7b8294; margin-top: 14px;"><strong style="color: #4a5060;">Figure 2.</strong> EquiVLA architecture. EquiPerceptor produces equivariant and invariant visual streams while preserving the pretrained VLM; EquiActor predicts equivariant action chunks with a flow-matching Diffusion Transformer.</figcaption>
       </figure>
-
-      <!-- EquiPerceptor -->
       <div style="border: 1px solid #ececf0; border-radius: 16px; padding: 28px 30px; margin-bottom: 20px;">
         <div style="display: flex; align-items: baseline; gap: 12px; margin-bottom: 12px; flex-wrap: wrap;">
           <span style="font-size: 22px;">🔭</span>
           <h3 style="font-family: 'Newsreader', serif; font-size: 23px; font-weight: 600; margin: 0; color: #15171d;">EquiPerceptor</h3>
-          <span style="font-size: 14px; color: #8a909e;">&mdash; Approximate $SO(2)$-Equivariant Visual Representations</span>
+          <span style="font-size: 14px; color: #8a909e;">— Approximate $SO(2)$-Equivariant Visual Representations</span>
         </div>
-        <p style="font-size: 16px; color: #4a5060; margin: 0 0 14px; line-height: 1.7;">EquiPerceptor extends Frame Averaging from globally pooled vectors to spatially-indexed ViT patch token sequences. When the input image is rotated, patch tokens are displaced in the grid, so naive averaging destroys spatial localization. EquiPerceptor applies the inverse group action jointly at two levels: a spatial permutation $\tau(h^{-1})$ that maps each displaced token back to its canonical patch position, and a feature-space transformation $\rho_{\text{reg}}(h^{-1})$ in the regular representation of $G$.</p>
-        <p style="font-size: 16px; color: #4a5060; margin: 0 0 14px; line-height: 1.7;">This yields two streams:</p>
+      <p style="font-size: 16px; color: #4a5060; margin: 0 0 14px; line-height: 1.7;">EquiPerceptor extends Frame Averaging from globally pooled vectors to spatially-indexed ViT patch token sequences. When the input image is rotated, patch tokens are displaced in the grid, so naive averaging destroys spatial localization. EquiPerceptor applies the inverse group action jointly at two levels: a spatial permutation $\tau(h^{-1})$ that maps each displaced token back to its canonical patch position, and a feature-space transformation $\rho_{\text{reg}}(h^{-1})$ in the regular representation of $G$.</p>
+      <p style="font-size: 16px; color: #4a5060; margin: 0 0 14px; line-height: 1.7;">This yields two streams:</p>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
           <div style="background: #f7f9fc; border-radius: 10px; padding: 14px 16px;">
             <div style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #2A6FDB; font-weight: 500; margin-bottom: 2px;">z<sup>eq</sup></div>
-            <div style="font-size: 14px; color: #5b6170;">equivariant token map &mdash; transforms with the scene</div>
+            <div style="font-size: 14px; color: #5b6170;">equivariant token map — transforms with the scene</div>
           </div>
           <div style="background: #f7f9fc; border-radius: 10px; padding: 14px 16px;">
             <div style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #2A6FDB; font-weight: 500; margin-bottom: 2px;">z<sup>inv</sup></div>
-            <div style="font-size: 14px; color: #5b6170;">invariant token map &mdash; rotation-independent</div>
+            <div style="font-size: 14px; color: #5b6170;">invariant token map — rotation-independent</div>
           </div>
         </div>
-        <p style="font-size: 16px; color: #4a5060; margin: 0; line-height: 1.7;"><span style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #2A6FDB;">z<sup>inv</sup></span> is fed into the frozen VLM alongside wrist-camera and language tokens to produce language-grounded context tokens <span style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #2A6FDB;">z<sup>ctx</sup></span>. An <strong>Equivariant Adapter</strong> then fuses <span style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #2A6FDB;">z<sup>eq</sup></span> and <span style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #2A6FDB;">z<sup>ctx</sup></span> via a learned invariant gate &mdash; all gate inputs are restricted to invariant quantities, preserving equivariance throughout.</p>
+      <p style="font-size: 16px; color: #4a5060; margin: 0; line-height: 1.7;"><span style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #2A6FDB;">z<sup>inv</sup></span> is fed into the frozen VLM alongside wrist-camera and language tokens to produce language-grounded context tokens <span style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #2A6FDB;">z<sup>ctx</sup></span>. An <strong>Equivariant Adapter</strong> fuses <span style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #2A6FDB;">z<sup>eq</sup></span> and <span style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #2A6FDB;">z<sup>ctx</sup></span> through learned gates that depend only on invariant quantities, producing the final context <span style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #2A6FDB;">z<sup>out</sup></span> while preserving equivariance.</p>
       </div>
-
-      <!-- EquiActor -->
       <div style="border: 1px solid #ececf0; border-radius: 16px; padding: 28px 30px; margin-bottom: 20px;">
         <div style="display: flex; align-items: baseline; gap: 12px; margin-bottom: 12px; flex-wrap: wrap;">
           <span style="font-size: 22px;">🎯</span>
           <h3 style="font-family: 'Newsreader', serif; font-size: 23px; font-weight: 600; margin: 0; color: #15171d;">EquiActor</h3>
-          <span style="font-size: 14px; color: #8a909e;">&mdash; Exactly $SO(2)$-Equivariant Flow-Matching DiT</span>
+          <span style="font-size: 14px; color: #8a909e;">— Equivariant Flow-Matching DiT over $C_u$</span>
         </div>
-        <p style="font-size: 16px; color: #4a5060; margin: 0 0 14px; line-height: 1.7;">EquiActor replaces the standard DiT action head with a fully $SO(2)$-equivariant counterpart built on steerable <em>escnn</em> layers in the regular feature space. All linear projections, attention Q/K/V matrices, state/action encoders, and the action decoder are $G$-steerable layers. Equivariant attention is achieved via the geometric inner product $\langle q, k\rangle = \sum_{g} q[g]\cdot k[g]$, which is $G$-invariant, yielding equivariant output when combined with equivariant $V$.</p>
+      <p style="font-size: 16px; color: #4a5060; margin: 0 0 14px; line-height: 1.7;">EquiActor replaces the standard DiT action head with a $C_u$-equivariant counterpart built with steerable layers in regular-representation space. State and noisy-action encoders, cross- and self-attention, feed-forward blocks, and the action decoder all preserve equivariance. Attention scores use the geometric inner product $\langle q, k\rangle = \sum_{g} q[g]\cdot k[g]$, which is invariant to the cyclic permutation induced by the regular representation.</p>
         <div style="background: #f7f9fc; border: 1px solid #e7ebf2; border-left: 3px solid #2A6FDB; border-radius: 10px; padding: 16px 20px; margin-bottom: 14px;">
-          <p style="font-size: 15.5px; color: #2b303c; margin: 0 0 12px; line-height: 1.65;"><strong>Action representation.</strong> End-effector position and orientation transform as $SO(2)$ vectors under scene rotation, while gripper width is rotation-invariant. The group action on the action vector decomposes into irreducible representations depending on the control mode:</p>
-          <ul style="font-size: 15px; color: #3a4150; margin: 0; padding-left: 20px; line-height: 1.7;">
-            <li style="margin-bottom: 8px;"><strong>Absolute control:</strong>&nbsp; $\rho_1^{3} \oplus (\rho_1 \oplus \rho_0) \oplus \rho_0$ &mdash; where $\rho_1^{3}$ encodes the 6D end-effector rotation as three 2D vector pairs, $\rho_1 \oplus \rho_0$ encodes $xy$ translation and $z$ height, and $\rho_0$ encodes gripper width.</li>
-            <li><strong>Relative control:</strong>&nbsp; $\rho_0^{6} \oplus \rho_1^{4} \oplus \rho_2$ &mdash; where $\rho_0^{6}$ encodes invariant scalar offsets and $\rho_2$ captures the frequency-2 component from quadratic terms in the relative rotation decomposition.</li>
-          </ul>
+      <p style="font-size: 15.5px; color: #2b303c; margin: 0 0 12px; line-height: 1.65;"><strong>Action representation.</strong> End-effector position and orientation transform as $SO(2)$ vectors under scene rotation, while gripper width is rotation-invariant. The group action on the action vector decomposes into irreducible representations depending on the control mode:</p>
+      <ul style="font-size: 15px; color: #3a4150; margin: 0; padding-left: 20px; line-height: 1.7;">
+        <li style="margin-bottom: 8px;"><strong>Absolute control:</strong>&nbsp; $\rho_1^{3} \oplus (\rho_1 \oplus \rho_0) \oplus \rho_0$ — where $\rho_1^{3}$ encodes the 6D end-effector rotation as three 2D vector pairs, $\rho_1 \oplus \rho_0$ encodes $xy$ translation and $z$ height, and $\rho_0$ encodes gripper width.</li>
+        <li><strong>Relative control:</strong>&nbsp; $\rho_0^{6} \oplus \rho_1^{4} \oplus \rho_2$ — where $\rho_0^{6}$ encodes invariant scalar offsets and $\rho_2$ captures the frequency-2 component from quadratic terms in the relative rotation decomposition.</li>
+      </ul>
         </div>
-        <p style="font-size: 16px; color: #4a5060; margin: 0; line-height: 1.7;">EquiActor is trained from scratch, as steerable layers are structurally incompatible with unconstrained pretrained weights. The equivariant inductive bias compensates for the loss of pretrained action-head initialization.</p>
+      <p style="font-size: 16px; color: #4a5060; margin: 0; line-height: 1.7;">EquiActor is trained from scratch, as steerable layers are structurally incompatible with unconstrained pretrained weights. The equivariant inductive bias compensates for the loss of pretrained action-head initialization.</p>
       </div>
-
-      <!-- End-to-end guarantee -->
       <div style="background: linear-gradient(180deg, #f4f8ff, #eef4fe); border: 1px solid #d8e5fb; border-radius: 16px; padding: 26px 30px;">
         <h3 style="font-family: 'Newsreader', serif; font-size: 21px; font-weight: 600; margin: 0 0 10px; color: #15171d;">End-to-End Equivariance Guarantee</h3>
-        <p style="font-size: 16px; color: #3a4150; margin: 0 0 6px; line-height: 1.7;">Together, EquiPerceptor and EquiActor establish an approximate $SO(2)$ equivariance chain:</p>
+      <p style="font-size: 16px; color: #3a4150; margin: 0 0 6px; line-height: 1.7;">Together, EquiPerceptor and EquiActor establish an approximate $SO(2)$ equivariance chain:</p>
         $$\hat{a}_t\big(g \cdot o_t,\; \rho_s(g)\, s_t\big) \;\approx\; \rho_a(g) \cdot \hat{a}_t\big(o_t, s_t\big) \qquad \forall\, g \in C_u$$
-        <p style="font-size: 15px; color: #5b6170; margin: 6px 0 0; line-height: 1.65;">EquiActor alone satisfies this relation <em>exactly</em> when paired with invariant VLM context tokens. The approximation error in the full system stems from EquiPerceptor's token-level discretization and is bounded formally in the paper.</p>
+      <p style="font-size: 15px; color: #5b6170; margin: 6px 0 0; line-height: 1.65;">EquiActor's velocity field is exactly $G$-equivariant when its context transforms as specified. The full relation is approximate because discrete image rotations and nearest-neighbor alignment can move rotated patch centers off the ViT grid; alignment is exact for grid-preserving rotations such as $C_4$ on a square grid.</p>
       </div>
     </section>
 
     <!-- RESULTS -->
     <section id="results" style="margin-bottom: 56px; scroll-margin-top: 80px;">
       <h2 style="font-family: 'Newsreader', serif; font-size: 13px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #2A6FDB; margin: 0 0 26px;">Results</h2>
-
-      <!-- LIBERO -->
       <h3 style="font-family: 'Newsreader', serif; font-size: 22px; font-weight: 600; margin: 0 0 6px; color: #15171d;">LIBERO Benchmark</h3>
-      <p style="font-size: 14.5px; color: #6b7180; margin: 0 0 18px; line-height: 1.6;">4 suites (LIBERO-10, Goal, Object, Spatial) &times; 10 tasks &times; 50 rollouts; per-suite training; relative and absolute EEF control; replanning every timestep; averaged over 2 seeds.</p>
+      <p style="font-size: 14.5px; color: #6b7180; margin: 0 0 18px; line-height: 1.6;">4 suites (LIBERO-10, Goal, Object, Spatial) × 10 tasks × 50 rollouts; per-suite training; relative and absolute EEF control; replanning every timestep; averaged over 2 seeds.</p>
       <div style="overflow-x: auto; margin-bottom: 14px;">
         <table style="width: 100%; border-collapse: collapse; font-size: 14.5px; min-width: 620px;">
           <thead>
@@ -155,37 +159,10 @@
               <th style="text-align: center; padding: 10px 8px; font-weight: 600; color: #15171d;">Goal</th>
               <th style="text-align: center; padding: 10px 8px; font-weight: 600; color: #15171d;">Object</th>
               <th style="text-align: center; padding: 10px 8px; font-weight: 600; color: #15171d;">Spatial</th>
-              <th style="text-align: center; padding: 10px 12px; font-weight: 700; color: #15171d;">Avg &uarr;</th>
+              <th style="text-align: center; padding: 10px 12px; font-weight: 700; color: #15171d;">Avg ↑</th>
             </tr>
           </thead>
           <tbody style="font-variant-numeric: tabular-nums;">
-            <tr style="border-bottom: 1px solid #ececf0; background: transparent;">
-              <td style="padding: 10px 12px; color: #4a5060; font-weight: 400;">&#x3C0;&#x2080;</td>
-              <td style="text-align: center; padding: 10px 8px; color: #8a909e; font-size: 13px;">Rel.</td>
-              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">73.0</td>
-              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">93.0</td>
-              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">86.0</td>
-              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">90.0</td>
-              <td style="text-align: center; padding: 10px 12px; color: #4a5060; font-weight: 700;">86.0</td>
-            </tr>
-            <tr style="border-bottom: 1px solid #ececf0; background: transparent;">
-              <td style="padding: 10px 12px; color: #4a5060; font-weight: 400;">OpenVLA</td>
-              <td style="text-align: center; padding: 10px 8px; color: #8a909e; font-size: 13px;">Rel.</td>
-              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">55.0</td>
-              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">79.2</td>
-              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">88.4</td>
-              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">84.7</td>
-              <td style="text-align: center; padding: 10px 12px; color: #4a5060; font-weight: 700;">76.8</td>
-            </tr>
-            <tr style="border-bottom: 1px solid #ececf0; background: transparent;">
-              <td style="padding: 10px 12px; color: #4a5060; font-weight: 400;">SmolVLA</td>
-              <td style="text-align: center; padding: 10px 8px; color: #8a909e; font-size: 13px;">Rel.</td>
-              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">61.0</td>
-              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">61.4</td>
-              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">66.0</td>
-              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">74.0</td>
-              <td style="text-align: center; padding: 10px 12px; color: #4a5060; font-weight: 700;">65.6</td>
-            </tr>
             <tr style="border-bottom: 1px solid #ececf0; background: transparent;">
               <td style="padding: 10px 12px; color: #4a5060; font-weight: 400;">GR00T N1.5 (baseline)</td>
               <td style="text-align: center; padding: 10px 8px; color: #8a909e; font-size: 13px;">Rel.</td>
@@ -194,15 +171,6 @@
               <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">83.4</td>
               <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">82.0</td>
               <td style="text-align: center; padding: 10px 12px; color: #4a5060; font-weight: 700;">78.1</td>
-            </tr>
-            <tr style="border-bottom: 1px solid #ececf0; background: transparent;">
-              <td style="padding: 10px 12px; color: #4a5060; font-weight: 400;">GR00T N1.5 + EquiActor</td>
-              <td style="text-align: center; padding: 10px 8px; color: #8a909e; font-size: 13px;">Rel.</td>
-              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">82.6</td>
-              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">88.0</td>
-              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">95.2</td>
-              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">98.2</td>
-              <td style="text-align: center; padding: 10px 12px; color: #4a5060; font-weight: 700;">91.0</td>
             </tr>
             <tr style="border-bottom: 1px solid #ececf0; background: #eef4fe;">
               <td style="padding: 10px 12px; color: #15171d; font-weight: 700;">EquiVLA (ours)</td>
@@ -222,15 +190,6 @@
               <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">68.6</td>
               <td style="text-align: center; padding: 10px 12px; color: #4a5060; font-weight: 700;">62.6</td>
             </tr>
-            <tr style="border-bottom: 1px solid #ececf0; background: transparent;">
-              <td style="padding: 10px 12px; color: #4a5060; font-weight: 400;">GR00T N1.5 + EquiActor</td>
-              <td style="text-align: center; padding: 10px 8px; color: #8a909e; font-size: 13px;">Abs.</td>
-              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">63.0</td>
-              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">70.0</td>
-              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">79.4</td>
-              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">82.0</td>
-              <td style="text-align: center; padding: 10px 12px; color: #4a5060; font-weight: 700;">73.6</td>
-            </tr>
             <tr style="border-bottom: 1px solid #ececf0; background: #eef4fe;">
               <td style="padding: 10px 12px; color: #15171d; font-weight: 700;">EquiVLA (ours)</td>
               <td style="text-align: center; padding: 10px 8px; color: #8a909e; font-size: 13px;">Abs.</td>
@@ -243,11 +202,81 @@
           </tbody>
         </table>
       </div>
-      <p style="font-size: 14.5px; color: #5b6170; margin: 0 0 40px; line-height: 1.65;">Gains are progressive: EquiActor alone accounts for most of the improvement <strong>(+12.9pp relative)</strong>; EquiPerceptor contributes a further <strong>+1.6pp</strong> (relative) and <strong>+2.5pp</strong> (absolute).</p>
-
-      <!-- CALVIN -->
-      <h3 style="font-family: 'Newsreader', serif; font-size: 22px; font-weight: 600; margin: 0 0 6px; color: #15171d;">CALVIN ABCD&rarr;D Benchmark</h3>
-      <p style="font-size: 14.5px; color: #6b7180; margin: 0 0 18px; line-height: 1.6;">Single-frame observations (image + proprioception); trained on environments A, B, C, D; zero-shot evaluation on held-out environment D; 1000 instruction chains of up to 5 sequential tasks.</p>
+      <p style="font-size: 14.5px; color: #5b6170; margin: 0 0 40px; line-height: 1.65;">Under matched training settings, EquiVLA improves average success from <strong>78.1% to 92.6% (+14.5 pp)</strong> with relative control and from <strong>62.6% to 76.1% (+13.5 pp)</strong> with absolute control. Component effects are reported separately in the ablation section below.</p>
+      <h3 style="font-family: 'Newsreader', serif; font-size: 22px; font-weight: 600; margin: 0 0 6px; color: #15171d;">Sample Efficiency on LIBERO</h3>
+      <p style="font-size: 14.5px; color: #5b6170; margin: 0 0 40px; line-height: 1.65;">EquiVLA outperforms GR00T N1.5 when trained with <strong>10%, 40%, and 100%</strong> of the demonstrations, with gains of <strong>+1.8, +10.6, and +14.5 pp</strong>, respectively. With only <strong>40% of the data</strong>, EquiVLA reaches <strong style="color: #2A6FDB;">84.5%</strong>, exceeding the baseline's <strong>78.1%</strong> with the full dataset — a <strong>2.5× reduction in demonstrations</strong> for better success.</p>
+      <h3 style="font-family: 'Newsreader', serif; font-size: 22px; font-weight: 600; margin: 0 0 6px; color: #15171d;">MimicGen Benchmark</h3>
+      <p style="font-size: 14.5px; color: #6b7180; margin: 0 0 18px; line-height: 1.6;">Four task variants with object position and orientation variation; 100 demonstrations and 50 evaluation rollouts per task; same pretrained backbone and matched training settings.</p>
+      <div style="overflow-x: auto; margin-bottom: 14px;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 14.5px; min-width: 680px;">
+          <thead>
+            <tr style="border-bottom: 2px solid #1a1d24;">
+              <th style="text-align: left; padding: 10px 12px; font-weight: 600; color: #15171d;">Method</th>
+              <th style="text-align: center; padding: 10px 8px; font-weight: 600; color: #15171d;">Hammer<br>Cleanup D1</th>
+              <th style="text-align: center; padding: 10px 8px; font-weight: 600; color: #15171d;">Square<br>D2</th>
+              <th style="text-align: center; padding: 10px 8px; font-weight: 600; color: #15171d;">Stack<br>D1</th>
+              <th style="text-align: center; padding: 10px 8px; font-weight: 600; color: #15171d;">Stack<br>Three D1</th>
+              <th style="text-align: center; padding: 10px 12px; font-weight: 700; color: #15171d;">Avg ↑</th>
+            </tr>
+          </thead>
+          <tbody style="font-variant-numeric: tabular-nums;">
+            <tr style="border-bottom: 1px solid #ececf0; background: transparent;">
+              <td style="padding: 10px 12px; color: #4a5060; font-weight: 400;">GR00T N1.5 (baseline)</td>
+              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">30</td>
+              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">6</td>
+              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">56</td>
+              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">14</td>
+              <td style="text-align: center; padding: 10px 12px; color: #4a5060; font-weight: 700;">26.5</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #ececf0; background: #eef4fe;">
+              <td style="padding: 10px 12px; color: #15171d; font-weight: 700;">EquiVLA (ours)</td>
+              <td style="text-align: center; padding: 10px 8px; color: #2A6FDB; font-weight: 700;">54</td>
+              <td style="text-align: center; padding: 10px 8px; color: #2A6FDB; font-weight: 700;">16</td>
+              <td style="text-align: center; padding: 10px 8px; color: #2A6FDB; font-weight: 700;">86</td>
+              <td style="text-align: center; padding: 10px 8px; color: #2A6FDB; font-weight: 700;">38</td>
+              <td style="text-align: center; padding: 10px 12px; color: #2A6FDB; font-weight: 700;">48.5</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size: 14.5px; color: #5b6170; margin: 0 0 40px; line-height: 1.65;">EquiVLA improves all four task variants by <strong>+24, +10, +30, and +24 pp</strong>, raising average success from <strong>26.5% to 48.5% (+22.0 pp)</strong>.</p>
+      <h3 style="font-family: 'Newsreader', serif; font-size: 22px; font-weight: 600; margin: 0 0 6px; color: #15171d;">Rotational Generalization and Equivariance Error</h3>
+      <p style="font-size: 14.5px; color: #6b7180; margin: 0 0 18px; line-height: 1.6;">Equivariance error is measured over 500 LIBERO observations and every rotation in $C_8$. Generalization is evaluated on LIBERO-Object at 11 scene rotations from −25° to +25°, while models are trained only at 0° without rotation augmentation.</p>
+      <div style="overflow-x: auto; margin-bottom: 14px;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 14.5px; min-width: 650px;">
+          <thead>
+            <tr style="border-bottom: 2px solid #1a1d24;">
+              <th style="text-align: left; padding: 10px 12px; font-weight: 600; color: #15171d;">Method</th>
+              <th style="text-align: center; padding: 10px 8px; font-weight: 600; color: #15171d;">Avg rotated-scene success ↑</th>
+              <th style="text-align: center; padding: 10px 8px; font-weight: 600; color: #15171d;">$\epsilon_{\mathrm{eq}}$ (mean ± std) ↓</th>
+              <th style="text-align: center; padding: 10px 12px; font-weight: 600; color: #15171d;">ms/step ↓</th>
+            </tr>
+          </thead>
+          <tbody style="font-variant-numeric: tabular-nums;">
+            <tr style="border-bottom: 1px solid #ececf0; background: transparent;">
+              <td style="padding: 10px 12px; color: #4a5060; font-weight: 400;">GR00T N1.5 (baseline)</td>
+              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">33.0%</td>
+              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">7.754 ± 3.572</td>
+              <td style="text-align: center; padding: 10px 12px; color: #6b7180; font-weight: 400;">64</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #ececf0; background: transparent;">
+              <td style="padding: 10px 12px; color: #4a5060; font-weight: 400;">+ EquiActor</td>
+              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">40.3%</td>
+              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">0.837 ± 0.738</td>
+              <td style="text-align: center; padding: 10px 12px; color: #6b7180; font-weight: 400;">147</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #ececf0; background: #eef4fe;">
+              <td style="padding: 10px 12px; color: #15171d; font-weight: 700;">EquiVLA (ours)</td>
+              <td style="text-align: center; padding: 10px 8px; color: #2A6FDB; font-weight: 700;">43.7%</td>
+              <td style="text-align: center; padding: 10px 8px; color: #2A6FDB; font-weight: 700;">0.284 ± 0.134</td>
+              <td style="text-align: center; padding: 10px 12px; color: #2A6FDB; font-weight: 700;">194</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size: 14.5px; color: #5b6170; margin: 0 0 40px; line-height: 1.65;">The full model reduces measured equivariance error by <strong>27.3×</strong>. Across all 11 rotations it improves average success from <strong>33.0% to 43.7% (+10.7 pp)</strong>; at +10°, EquiVLA reaches <strong>54.4%</strong> while the baseline falls to <strong>25.0%</strong>.</p>
+      <h3 style="font-family: 'Newsreader', serif; font-size: 22px; font-weight: 600; margin: 0 0 6px; color: #15171d;">CALVIN ABCD→D Benchmark</h3>
+      <p style="font-size: 14.5px; color: #6b7180; margin: 0 0 18px; line-height: 1.6;">Single-frame observations (image + proprioception); trained on the combined A, B, C, D environments; in-distribution evaluation on environment D; 1000 instruction chains of up to 5 sequential tasks.</p>
       <div style="overflow-x: auto; margin-bottom: 14px;">
         <table style="width: 100%; border-collapse: collapse; font-size: 14.5px; min-width: 560px;">
           <thead>
@@ -258,12 +287,12 @@
               <th style="text-align: center; padding: 10px 8px; font-weight: 600; color: #15171d;">T3</th>
               <th style="text-align: center; padding: 10px 8px; font-weight: 600; color: #15171d;">T4</th>
               <th style="text-align: center; padding: 10px 8px; font-weight: 600; color: #15171d;">T5</th>
-              <th style="text-align: center; padding: 10px 12px; font-weight: 700; color: #15171d;">Avg &uarr;</th>
+              <th style="text-align: center; padding: 10px 12px; font-weight: 700; color: #15171d;">Avg ↑</th>
             </tr>
           </thead>
           <tbody style="font-variant-numeric: tabular-nums;">
             <tr style="border-bottom: 1px solid #ececf0; background: transparent;">
-              <td style="padding: 10px 12px; color: #4a5060; font-weight: 400;">HULC (multi-frame&dagger;)</td>
+              <td style="padding: 10px 12px; color: #4a5060; font-weight: 400;">HULC (multi-frame†)</td>
               <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">88.9</td>
               <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">73.3</td>
               <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">58.7</td>
@@ -272,7 +301,7 @@
               <td style="text-align: center; padding: 10px 12px; color: #4a5060; font-weight: 700;">3.07</td>
             </tr>
             <tr style="border-bottom: 1px solid #ececf0; background: transparent;">
-              <td style="padding: 10px 12px; color: #4a5060; font-weight: 400;">MoDE (multi-frame&dagger;)</td>
+              <td style="padding: 10px 12px; color: #4a5060; font-weight: 400;">MoDE (multi-frame†)</td>
               <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">97.1</td>
               <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">92.5</td>
               <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">87.9</td>
@@ -289,15 +318,6 @@
               <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">48.5</td>
               <td style="text-align: center; padding: 10px 12px; color: #4a5060; font-weight: 700;">3.45</td>
             </tr>
-            <tr style="border-bottom: 1px solid #ececf0; background: transparent;">
-              <td style="padding: 10px 12px; color: #4a5060; font-weight: 400;">GR00T N1.5 + EquiActor</td>
-              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">93.7</td>
-              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">85.8</td>
-              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">77.8</td>
-              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">70.1</td>
-              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">61.9</td>
-              <td style="text-align: center; padding: 10px 12px; color: #4a5060; font-weight: 700;">3.89</td>
-            </tr>
             <tr style="border-bottom: 1px solid #ececf0; background: #eef4fe;">
               <td style="padding: 10px 12px; color: #15171d; font-weight: 700;">EquiVLA (ours)</td>
               <td style="text-align: center; padding: 10px 8px; color: #2A6FDB; font-weight: 700;">95.0</td>
@@ -310,12 +330,10 @@
           </tbody>
         </table>
       </div>
-      <p style="font-size: 12.5px; color: #9aa1b1; margin: 0 0 12px;">&dagger; Multi-frame baselines use temporal history; not directly comparable.</p>
-      <p style="font-size: 14.5px; color: #5b6170; margin: 0 0 40px; line-height: 1.65;">Gains are largest at the tail of the chain &mdash; Task 5 improves from 48.5% to <strong>64.3% (+15.8pp)</strong>, suggesting equivariance mitigates error accumulation in long-horizon execution. EquiVLA approaches MoDE (4.39) despite using single-frame observations only.</p>
-
-      <!-- REAL ROBOT -->
-      <h3 style="font-family: 'Newsreader', serif; font-size: 22px; font-weight: 600; margin: 0 0 6px; color: #15171d;">Real Robot &mdash; Mobile ALOHA</h3>
-      <p style="font-size: 14.5px; color: #6b7180; margin: 0 0 18px; line-height: 1.6;">5 tabletop manipulation tasks; 150 teleoperated demonstrations each; 20 trials per task. Four tasks use the right arm only; Shorts Folding is bimanual.</p>
+      <p style="font-size: 12.5px; color: #9aa1b1; margin: 0 0 12px;">† Multi-frame baselines use temporal history; not directly comparable.</p>
+      <p style="font-size: 14.5px; color: #5b6170; margin: 0 0 40px; line-height: 1.65;">EquiVLA increases average sequence length from <strong>3.45 to 4.03 (+0.58)</strong> and improves success at every position in the instruction chain. The largest gain occurs at Task 5, from <strong>48.5% to 64.3% (+15.8 pp)</strong>.</p>
+      <h3 style="font-family: 'Newsreader', serif; font-size: 22px; font-weight: 600; margin: 0 0 6px; color: #15171d;">Real Robot — Mobile ALOHA</h3>
+      <p style="font-size: 14.5px; color: #6b7180; margin: 0 0 18px; line-height: 1.6;">5 tabletop manipulation tasks on Mobile ALOHA; 150 teleoperated demonstrations each; 20 trials per task and model; fine-tuned from the same GR00T N1.5 3B checkpoint. Four tasks use the right arm only; Shorts Folding is bimanual.</p>
       <div style="overflow-x: auto; margin-bottom: 14px;">
         <table style="width: 100%; border-collapse: collapse; font-size: 14.5px; min-width: 480px;">
           <thead>
@@ -323,7 +341,7 @@
               <th style="text-align: left; padding: 10px 12px; font-weight: 600; color: #15171d;">Task</th>
               <th style="text-align: center; padding: 10px 12px; font-weight: 600; color: #15171d;">GR00T N1.5</th>
               <th style="text-align: center; padding: 10px 12px; font-weight: 700; color: #15171d;">EquiVLA (ours)</th>
-              <th style="text-align: center; padding: 10px 12px; font-weight: 600; color: #15171d;">&Delta;</th>
+              <th style="text-align: center; padding: 10px 12px; font-weight: 600; color: #15171d;">Δ</th>
             </tr>
           </thead>
           <tbody style="font-variant-numeric: tabular-nums;">
@@ -367,11 +385,10 @@
         </table>
       </div>
       <ul style="font-size: 15px; color: #4a5060; margin: 0 0 28px; padding-left: 20px; line-height: 1.7;">
-        <li style="margin-bottom: 8px;"><strong>Largest gains</strong> on orientation-variant tasks: House Building (+35pp, triangular block grasped at varied angles), Letter Aligning (+30pp, <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px;">I</span> block at arbitrary orientations).</li>
-        <li><strong>Zero cost</strong> when rotational symmetry is absent: Shorts Folding (85% for both), confirming no performance penalty from the equivariant inductive bias.</li>
+        <li style="margin-bottom: 8px;"><strong>High rotational variation:</strong> House Building and Letter Aligning gain <strong>+35 pp</strong> and <strong>+30 pp</strong>, averaging +32.5 pp across the group.</li>
+        <li style="margin-bottom: 8px;"><strong>Intermediate variation:</strong> Banana in Pot and Block Storing gain <strong>+15 pp</strong> and <strong>+10 pp</strong>, averaging +12.5 pp.</li>
+        <li><strong>Low variation:</strong> Shorts Folding remains at 85% for both methods. The high-to-intermediate-to-low ordering is consistent with larger benefits when grasps and placements must adapt to object pose.</li>
       </ul>
-
-      <!-- Task images -->
       <figure style="margin: 0 0 36px;">
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
           <div>
@@ -431,11 +448,74 @@
         </div>
         <figcaption style="text-align: center; font-size: 14px; color: #7b8294; margin-top: 18px;"><strong style="color: #4a5060;">Figure 5.</strong> Real-robot tasks on Mobile ALOHA. For each task the first and last frames show the initial and goal states. Success rates: EquiVLA (blue) vs. GR00T N1.5 over 20 trials.</figcaption>
       </figure>
-
-      <!-- Per-task videos -->
+      <h3 style="font-family: 'Newsreader', serif; font-size: 22px; font-weight: 600; margin: 0 0 10px; color: #15171d;">Ablation Highlights</h3>
+      <p style="font-size: 14.5px; color: #6b7180; margin: 0 0 18px; line-height: 1.6;">LIBERO success under relative control. The ViT is frozen unless marked unfrozen; all runs use the same pretrained checkpoint and matched training settings.</p>
+      <div style="overflow-x: auto; margin-bottom: 14px;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 14.5px; min-width: 650px;">
+          <thead>
+            <tr style="border-bottom: 2px solid #1a1d24;">
+              <th style="text-align: left; padding: 10px 12px; font-weight: 600; color: #15171d;">Method</th>
+              <th style="text-align: center; padding: 10px 8px; font-weight: 600; color: #15171d;">LIBERO-10</th>
+              <th style="text-align: center; padding: 10px 8px; font-weight: 600; color: #15171d;">Goal</th>
+              <th style="text-align: center; padding: 10px 8px; font-weight: 600; color: #15171d;">Object</th>
+              <th style="text-align: center; padding: 10px 8px; font-weight: 600; color: #15171d;">Spatial</th>
+              <th style="text-align: center; padding: 10px 12px; font-weight: 700; color: #15171d;">Avg ↑</th>
+            </tr>
+          </thead>
+          <tbody style="font-variant-numeric: tabular-nums;">
+            <tr style="border-bottom: 1px solid #ececf0; background: transparent;">
+              <td style="padding: 10px 12px; color: #4a5060; font-weight: 400;">GR00T N1.5</td>
+              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">72.0</td>
+              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">75.0</td>
+              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">83.4</td>
+              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">82.0</td>
+              <td style="text-align: center; padding: 10px 12px; color: #4a5060; font-weight: 700;">78.1</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #ececf0; background: transparent;">
+              <td style="padding: 10px 12px; color: #4a5060; font-weight: 400;">+ re-init. DiT</td>
+              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">76.0</td>
+              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">86.6</td>
+              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">90.8</td>
+              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">86.2</td>
+              <td style="text-align: center; padding: 10px 12px; color: #4a5060; font-weight: 700;">84.9</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #ececf0; background: transparent;">
+              <td style="padding: 10px 12px; color: #4a5060; font-weight: 400;">+ EquiActor</td>
+              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">82.6</td>
+              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">88.0</td>
+              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">95.2</td>
+              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">98.2</td>
+              <td style="text-align: center; padding: 10px 12px; color: #4a5060; font-weight: 700;">91.0</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #ececf0; background: #eef4fe;">
+              <td style="padding: 10px 12px; color: #15171d; font-weight: 700;">EquiVLA</td>
+              <td style="text-align: center; padding: 10px 8px; color: #2A6FDB; font-weight: 700;">87.6</td>
+              <td style="text-align: center; padding: 10px 8px; color: #2A6FDB; font-weight: 700;">89.4</td>
+              <td style="text-align: center; padding: 10px 8px; color: #2A6FDB; font-weight: 700;">98.0</td>
+              <td style="text-align: center; padding: 10px 8px; color: #2A6FDB; font-weight: 700;">95.4</td>
+              <td style="text-align: center; padding: 10px 12px; color: #2A6FDB; font-weight: 700;">92.6</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #ececf0; background: transparent;">
+              <td style="padding: 10px 12px; color: #4a5060; font-weight: 400;">GR00T N1.5 (unfrozen)</td>
+              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">77.4</td>
+              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">82.8</td>
+              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">81.6</td>
+              <td style="text-align: center; padding: 10px 8px; color: #6b7180; font-weight: 400;">88.4</td>
+              <td style="text-align: center; padding: 10px 12px; color: #4a5060; font-weight: 700;">82.5</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #ececf0; background: #eef4fe;">
+              <td style="padding: 10px 12px; color: #15171d; font-weight: 700;">EquiVLA (unfrozen)</td>
+              <td style="text-align: center; padding: 10px 8px; color: #2A6FDB; font-weight: 700;">90.0</td>
+              <td style="text-align: center; padding: 10px 8px; color: #2A6FDB; font-weight: 700;">91.4</td>
+              <td style="text-align: center; padding: 10px 8px; color: #2A6FDB; font-weight: 700;">96.6</td>
+              <td style="text-align: center; padding: 10px 8px; color: #2A6FDB; font-weight: 700;">95.2</td>
+              <td style="text-align: center; padding: 10px 12px; color: #2A6FDB; font-weight: 700;">93.3</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size: 14.5px; color: #5b6170; margin: 0 0 40px; line-height: 1.65;">A matched-size reinitialized DiT reaches <strong>84.9%</strong>; replacing it with EquiActor raises success to <strong>91.0% (+6.1 pp)</strong>, and adding EquiPerceptor reaches <strong>92.6% (+1.6 pp)</strong>. Unfreezing the ViT raises EquiVLA to <strong>93.3%</strong>, while it still retains a <strong>+10.8 pp</strong> advantage over the unfrozen baseline. For group order, $C_8$ is selected at <strong>92.6% and 194 ms/step</strong>; $C_4$ is 1.0 pp lower but faster (161 ms/step), while $C_{16}$ reaches 94.3% at 25% higher latency than $C_8$.</p>
       <h3 style="font-family: 'Newsreader', serif; font-size: 20px; font-weight: 600; margin: 0 0 24px; color: #15171d;">Per-Task Videos</h3>
-
-      <!-- Banana in Pot -->
       <div style="margin-bottom: 32px;">
         <div style="font-size: 15px; font-weight: 600; color: #15171d; margin-bottom: 12px;">Banana in Pot</div>
         <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
@@ -445,8 +525,6 @@
           <video controls muted style="width: 100%; border-radius: 10px; display: block; background: #0a0b0d;"><source src="video/banana_in_pot/episode_000033.mp4" type="video/mp4"></video>
         </div>
       </div>
-
-      <!-- Block Storing -->
       <div style="margin-bottom: 32px;">
         <div style="font-size: 15px; font-weight: 600; color: #15171d; margin-bottom: 12px;">Block Storing</div>
         <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
@@ -456,8 +534,6 @@
           <video controls muted style="width: 100%; border-radius: 10px; display: block; background: #0a0b0d;"><source src="video/block_storing/episode_000028.mp4" type="video/mp4"></video>
         </div>
       </div>
-
-      <!-- House Building -->
       <div style="margin-bottom: 32px;">
         <div style="font-size: 15px; font-weight: 600; color: #15171d; margin-bottom: 12px;">House Building</div>
         <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
@@ -467,8 +543,6 @@
           <video controls muted style="width: 100%; border-radius: 10px; display: block; background: #0a0b0d;"><source src="video/house_building/episode_000090.mp4" type="video/mp4"></video>
         </div>
       </div>
-
-      <!-- Letter Aligning -->
       <div style="margin-bottom: 32px;">
         <div style="font-size: 15px; font-weight: 600; color: #15171d; margin-bottom: 12px;">Letter Aligning</div>
         <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
@@ -478,8 +552,6 @@
           <video controls muted style="width: 100%; border-radius: 10px; display: block; background: #0a0b0d;"><source src="video/letter_aligning/episode_000059.mp4" type="video/mp4"></video>
         </div>
       </div>
-
-      <!-- Shorts Folding -->
       <div style="margin-bottom: 8px;">
         <div style="font-size: 15px; font-weight: 600; color: #15171d; margin-bottom: 12px;">Shorts Folding</div>
         <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
@@ -498,13 +570,13 @@
         <video controls style="width: 100%; border-radius: 16px; border: 1px solid #e4e8f0; display: block; background: #0a0b0d;">
           <source src="https://github.com/equivla/equivla/releases/download/v1.0/EquiVLA.mp4" type="video/mp4">
         </video>
-        <figcaption style="text-align: center; font-size: 14px; color: #7b8294; margin-top: 14px;"><strong style="color: #4a5060;">Video.</strong> Overview of EquiVLA &mdash; framework motivation, architecture, and real-robot demonstrations across all five tasks.</figcaption>
+        <figcaption style="text-align: center; font-size: 14px; color: #7b8294; margin-top: 14px;"><strong style="color: #4a5060;">Video.</strong> Overview of EquiVLA — framework motivation, architecture, and real-robot demonstrations across all five tasks.</figcaption>
       </figure>
     </section>
 
     <footer style="border-top: 1px solid #ececf0; padding: 36px 0 64px; text-align: center;">
       <p style="font-family: 'Newsreader', serif; font-size: 18px; color: #4a5060; margin: 0 0 6px;">Equi<span style="color: #2A6FDB;">VLA</span></p>
-      <p style="font-size: 13.5px; color: #9aa1b1; margin: 0;">Anonymous submission &middot; under review. Paper, code, and video coming soon.</p>
+      <p style="font-size: 13.5px; color: #9aa1b1; margin: 0;">Anonymous submission · under review. Paper and code coming soon.</p>
     </footer>
 
   </div>
