@@ -265,86 +265,465 @@
           },
           {
             "type": "details",
-            "summary": "View Full Proof",
+            "summary": "View Full Proof — All Propositions, Theorem, and Corollaries",
             "blocks": [
               {
                 "type": "heading",
-                "text": "Assumption — Lipschitz Continuity of EquiActor",
+                "text": "Notation and Setting",
                 "size": 18,
                 "margin_bottom": 10
               },
               {
                 "type": "paragraph",
                 "variant": "boxed",
-                "text": "For any two visual-context representations $z_1$ and $z_2$ with shared proprioceptive state and noise, EquiActor $\\mathcal{A}$ is $L$-Lipschitz:"
+                "text": "Let $G=C_u$ be a cyclic group of planar rotations acting on images by $g\\!\\cdot\\!x$. The frozen ViT $f_\\theta:\\mathbb{R}^{H\\times W\\times3}\\to\\mathbb{R}^{N\\times D}$ produces $N$ patch tokens. Define the output action $A(h)=\\tau(h)\\otimes\\rho_{\\mathrm{reg}}(h)$, where $\\tau(h)\\in\\mathrm{Perm}(N)$ permutes token positions and $\\rho_{\\mathrm{reg}}(h)$ is the regular representation. For nearest-neighbor grid reassignment, write $\\widetilde{\\tau}$ and $\\widetilde{A}(h)=\\widetilde{\\tau}(h)\\otimes\\rho_{\\mathrm{reg}}(h)$. The full observation is $o$, with image component $x$."
               },
               {
-                "type": "math",
-                "tex": "\\left\\|\\mathcal{A}(z_1)-\\mathcal{A}(z_2)\\right\\| \\leq L\\left\\|z_1-z_2\\right\\|."
+                "type": "details",
+                "summary": "Proposition 1 — Exact Token-Level FA Equivariance",
+                "blocks": [
+                  {
+                    "type": "paragraph",
+                    "variant": "boxed",
+                    "text": "**Statement.** Suppose $\\tau:G\\to\\mathrm{Perm}(N)$ is a group homomorphism, i.e., $\\tau(gh)=\\tau(g)\\circ\\tau(h)$ for all $g,h\\in G$. Then"
+                  },
+                  {
+                    "type": "math",
+                    "tex": "z^{\\mathrm{eq}}(x)=\\frac{1}{|G|}\\sum_{h\\in G}A(h^{-1})f_\\theta(h\\!\\cdot\\!x)"
+                  },
+                  {
+                    "type": "paragraph",
+                    "variant": "boxed",
+                    "text": "is exactly $G$-equivariant, $z^{\\mathrm{eq}}(g\\!\\cdot\\!x)=A(g)z^{\\mathrm{eq}}(x)$, for every $g\\in G$ and for any choice of $f_\\theta$."
+                  },
+                  {
+                    "type": "heading",
+                    "text": "Proof",
+                    "size": 17,
+                    "margin_bottom": 8
+                  },
+                  {
+                    "type": "math",
+                    "tex": "\\begin{aligned} z^{\\mathrm{eq}}(g\\!\\cdot\\!x) &= \\frac{1}{|G|}\\sum_{h\\in G}A(h^{-1})f_\\theta(hg\\!\\cdot\\!x) \\\\ &\\overset{h'=hg}{=}\\frac{1}{|G|}\\sum_{h'}A\\!\\left(g(h')^{-1}\\right)f_\\theta(h'\\!\\cdot\\!x) \\\\ &=A(g)\\frac{1}{|G|}\\sum_{h'}A\\!\\left((h')^{-1}\\right)f_\\theta(h'\\!\\cdot\\!x) \\\\ &=A(g)z^{\\mathrm{eq}}(x). \\end{aligned}"
+                  },
+                  {
+                    "type": "paragraph",
+                    "variant": "boxed",
+                    "text": "The third equality uses $A(g(h')^{-1})=A(g)A((h')^{-1})$. This holds because $\\tau$ is a homomorphism and $\\rho_{\\mathrm{reg}}$ is a group representation, hence $A=\\tau\\otimes\\rho_{\\mathrm{reg}}$ is also a homomorphism. $\\square$"
+                  },
+                  {
+                    "type": "heading",
+                    "text": "Invariant Stream",
+                    "size": 17,
+                    "margin_bottom": 8
+                  },
+                  {
+                    "type": "math",
+                    "tex": "\\begin{aligned} z^{\\mathrm{inv}}(g\\!\\cdot\\!x) &= \\frac{1}{|G|}\\sum_h f_\\theta(hg\\!\\cdot\\!x) \\\\ &=\\frac{1}{|G|}\\sum_{h'}f_\\theta(h'\\!\\cdot\\!x)=z^{\\mathrm{inv}}(x). \\end{aligned}"
+                  },
+                  {
+                    "type": "paragraph",
+                    "variant": "small",
+                    "last": true,
+                    "text": "Thus $z^{\\mathrm{inv}}(x)=|G|^{-1}\\sum_h f_\\theta(h\\!\\cdot\\!x)$ is exactly invariant for any $f_\\theta$ by the same change of variable $h'=hg$."
+                  }
+                ]
               },
               {
-                "type": "paragraph",
-                "variant": "small",
-                "text": "This is the standard regularity assumption used in the appendix: with bounded weights, $L$ is controlled by the attention and MLP layer norms."
+                "type": "details",
+                "summary": "Theorem 1 — Approximate FA Equivariance Bound",
+                "blocks": [
+                  {
+                    "type": "heading",
+                    "text": "Definition — Representation Defect",
+                    "size": 17,
+                    "margin_bottom": 8
+                  },
+                  {
+                    "type": "math",
+                    "tex": "D(g,h)\\coloneqq\\widetilde{A}(gh)-\\widetilde{A}(g)\\widetilde{A}(h), \\qquad \\Delta\\coloneqq\\max_{g,h\\in G}\\left\\|D(g,h)\\right\\|_{\\mathrm{op}}."
+                  },
+                  {
+                    "type": "paragraph",
+                    "variant": "boxed",
+                    "text": "Because $\\rho_{\\mathrm{reg}}$ is an exact unitary representation, the defect reduces to the spatial component:"
+                  },
+                  {
+                    "type": "math",
+                    "tex": "\\left\\|D(g,h)\\right\\|_{\\mathrm{op}}=\\left\\|\\widetilde{\\tau}(gh)-\\widetilde{\\tau}(g)\\circ\\widetilde{\\tau}(h)\\right\\|_{\\mathrm{op}}."
+                  },
+                  {
+                    "type": "paragraph",
+                    "variant": "boxed",
+                    "text": "**Statement.** Let $\\widetilde{z}^{\\mathrm{eq}}$ be token-level Frame Averaging with approximate spatial reassignment $\\widetilde{\\tau}$. For all $g\\in G$,"
+                  },
+                  {
+                    "type": "math",
+                    "tex": "\\widetilde{z}^{\\mathrm{eq}}(g\\!\\cdot\\!x)=\\widetilde{A}(g)\\widetilde{z}^{\\mathrm{eq}}(x)+\\varepsilon(g,x),"
+                  },
+                  {
+                    "type": "math",
+                    "tex": "\\left\\|\\varepsilon(g,x)\\right\\|\\leq\\frac{1}{|G|}\\sum_{h\\in G}\\left\\|D(g,h^{-1})\\right\\|_{\\mathrm{op}}\\left\\|f_\\theta(h\\!\\cdot\\!x)\\right\\|\\leq\\Delta B(x),"
+                  },
+                  {
+                    "type": "paragraph",
+                    "variant": "boxed",
+                    "text": "where $B(x)=\\max_{h\\in G}\\|f_\\theta(h\\!\\cdot\\!x)\\|$. In particular, $\\Delta=0$ implies exact equivariance."
+                  },
+                  {
+                    "type": "heading",
+                    "text": "Proof",
+                    "size": 17,
+                    "margin_bottom": 8
+                  },
+                  {
+                    "type": "math",
+                    "tex": "\\widetilde{z}^{\\mathrm{eq}}(g\\!\\cdot\\!x)=\\frac{1}{|G|}\\sum_{h'}\\widetilde{A}\\!\\left(g(h')^{-1}\\right)f_\\theta(h'\\!\\cdot\\!x)."
+                  },
+                  {
+                    "type": "paragraph",
+                    "variant": "boxed",
+                    "text": "Use the defect decomposition $\\widetilde{A}(g(h')^{-1})=\\widetilde{A}(g)\\widetilde{A}((h')^{-1})+D(g,(h')^{-1})$:"
+                  },
+                  {
+                    "type": "math",
+                    "tex": "\\begin{aligned} \\widetilde{z}^{\\mathrm{eq}}(g\\!\\cdot\\!x) &= \\widetilde{A}(g)\\underbrace{\\frac{1}{|G|}\\sum_{h'}\\widetilde{A}\\!\\left((h')^{-1}\\right)f_\\theta(h'\\!\\cdot\\!x)}_{=\\,\\widetilde{z}^{\\mathrm{eq}}(x)} \\\\ &\\quad+\\underbrace{\\frac{1}{|G|}\\sum_{h'}D\\!\\left(g,(h')^{-1}\\right)f_\\theta(h'\\!\\cdot\\!x)}_{=\\,\\varepsilon(g,x)}. \\end{aligned}"
+                  },
+                  {
+                    "type": "paragraph",
+                    "variant": "boxed",
+                    "last": true,
+                    "text": "The first inequality follows from the triangle inequality and the definition of the operator norm. The second uses $\\|D(g,h^{-1})\\|_{\\mathrm{op}}\\leq\\Delta$ and $\\|f_\\theta(h\\!\\cdot\\!x)\\|\\leq B(x)$. $\\square$"
+                  }
+                ]
               },
               {
-                "type": "heading",
-                "text": "End-to-End Equivariance Theorem",
-                "size": 18,
-                "margin_bottom": 10
+                "type": "details",
+                "summary": "Proposition 2 — Grid-Aligned Rotations and Geometric Defect",
+                "blocks": [
+                  {
+                    "type": "heading",
+                    "text": "Definition — Maximum Spatial Displacement",
+                    "size": 17,
+                    "margin_bottom": 8
+                  },
+                  {
+                    "type": "math",
+                    "tex": "\\delta_h(i)=\\left\\|p_{\\widetilde{\\tau}(h)(i)}-h\\!\\cdot\\!p_i\\right\\|_2, \\qquad \\delta_{\\max}=\\max_{h\\in G,\\,i\\in[N]}\\delta_h(i)."
+                  },
+                  {
+                    "type": "paragraph",
+                    "variant": "small",
+                    "text": "Here $p_i$ is a patch center on an $n\\times n$ grid with spacing $p$. For interior patches whose rotated positions remain inside the grid's convex hull, $\\delta_h(i)\\leq p\\sqrt{2}/2$; boundary patches can exceed this value."
+                  },
+                  {
+                    "type": "heading",
+                    "text": "Proposition",
+                    "size": 17,
+                    "margin_bottom": 8
+                  },
+                  {
+                    "type": "list",
+                    "items": [
+                      "**(a) Exact case.** If $\\delta_h(i)=0$ for every $h$ and $i$, then $\\Delta=0$. On a square grid this holds when $u$ divides $4$, because $90^\\circ$ rotations map patch centers exactly to patch centers.",
+                      "**(b) $C_4$ subgroup.** In $C_8$, the subgroup $\\{0^\\circ,90^\\circ,180^\\circ,270^\\circ\\}$ has zero displacement. The defect comes only from the coset $\\{45^\\circ,135^\\circ,225^\\circ,315^\\circ\\}$.",
+                      "**(c) Coset structure.** For $g\\in C_4\\leq C_8$, $D(g,h)=0$ whenever $h\\in C_4$. Thus at most four terms in the approximate bound are non-zero.",
+                      "**(d) Permutation-norm bound.** Universally, $\\|D(g,h)\\|_{\\mathrm{op}}\\leq2$ and $\\|D(g,h)\\|_F=\\sqrt{2m(g,h)}$, where $m(g,h)$ counts positions at which composed nearest-neighbor reassignments disagree with reassignment under the composed rotation.",
+                      "**(e) Displacement–defect connection.** A disagreement can occur only when the accumulated displacement is at least one grid spacing."
+                    ],
+                    "color": "#3a4150",
+                    "margin_bottom": 12
+                  },
+                  {
+                    "type": "math",
+                    "tex": "\\left\\|\\varepsilon(g,x)\\right\\|\\leq\\frac{|G\\setminus C_4|}{|G|}\\Delta B(x)=\\frac{1}{2}\\Delta B(x),\\qquad g\\in C_4."
+                  },
+                  {
+                    "type": "math",
+                    "tex": "m(g,h)=\\left|\\left\\{i:[\\widetilde{\\tau}(g)\\circ\\widetilde{\\tau}(h)](i)\\neq\\widetilde{\\tau}(gh)(i)\\right\\}\\right|."
+                  },
+                  {
+                    "type": "math",
+                    "tex": "\\delta_h(i)+\\delta_g\\!\\left(\\widetilde{\\tau}(h)(i)\\right)+\\delta_{gh}(i)\\geq p."
+                  },
+                  {
+                    "type": "paragraph",
+                    "variant": "boxed",
+                    "text": "Consequently, $m(g,h)$ is at most the number of positions satisfying the displacement inequality above."
+                  },
+                  {
+                    "type": "heading",
+                    "text": "Proof",
+                    "size": 17,
+                    "margin_bottom": 8
+                  },
+                  {
+                    "type": "paragraph",
+                    "variant": "boxed",
+                    "text": "**(a)** If every displacement vanishes, each rotation maps every patch center exactly to another. The unique tracking permutation therefore satisfies $\\widetilde{\\tau}(gh)=\\widetilde{\\tau}(g)\\circ\\widetilde{\\tau}(h)$, so $\\Delta=0$. On an integer square grid, $(x,y)\\mapsto(-y,x)$ is a bijection, hence all multiples of $90^\\circ$ are exact. A $45^\\circ$ rotation maps $(x,y)$ to $((x-y)/\\sqrt2,(x+y)/\\sqrt2)$ and generally leaves the integer lattice."
+                  },
+                  {
+                    "type": "paragraph",
+                    "variant": "boxed",
+                    "text": "**(b)** Apply part (a) to the $C_4$ subgroup."
+                  },
+                  {
+                    "type": "paragraph",
+                    "variant": "boxed",
+                    "text": "**(c)** If $g,h\\in C_4$, both spatial actions are exact and $gh\\in C_4$ by closure. Hence $D(g,h)=0$. Restricting the residual sum to $h\\notin C_4$ leaves at most $|G\\setminus C_4|=4$ terms and gives the factor-$1/2$ bound."
+                  },
+                  {
+                    "type": "paragraph",
+                    "variant": "boxed",
+                    "text": "**(d)** Both $\\widetilde{\\tau}(gh)$ and $\\widetilde{\\tau}(g)\\circ\\widetilde{\\tau}(h)$ are $N\\times N$ permutation matrices. Each disagreeing position contributes exactly two to the squared Frobenius norm, so $\\|D\\|_F=\\sqrt{2m}$. The operator-norm bound follows from the triangle inequality and the unit operator norm of permutation matrices."
+                  },
+                  {
+                    "type": "paragraph",
+                    "variant": "boxed",
+                    "text": "**(e)** The composed path sends $i$ to the grid point nearest $g\\!\\cdot\\!p_{\\widetilde{\\tau}(h)(i)}$, whereas the direct path sends it to the grid point nearest $(gh)\\!\\cdot\\!p_i$. Since $g$ is an isometry,"
+                  },
+                  {
+                    "type": "math",
+                    "tex": "\\left\\|g\\!\\cdot\\!p_{\\widetilde{\\tau}(h)(i)}-(gh)\\!\\cdot\\!p_i\\right\\|=\\left\\|p_{\\widetilde{\\tau}(h)(i)}-h\\!\\cdot\\!p_i\\right\\|=\\delta_h(i)."
+                  },
+                  {
+                    "type": "paragraph",
+                    "variant": "boxed",
+                    "text": "By the triangle inequality, the distance between the two selected target grid points is bounded by $\\delta_h(i)+\\delta_g(\\widetilde{\\tau}(h)(i))+\\delta_{gh}(i)$. Distinct grid points are separated by at least $p$, which gives the stated condition by contraposition. $\\square$"
+                  },
+                  {
+                    "type": "heading",
+                    "text": "Computed $C_8$ Defect Values",
+                    "size": 17,
+                    "margin_bottom": 8
+                  },
+                  {
+                    "type": "paragraph",
+                    "variant": "small",
+                    "text": "Unit grid spacing $p=1$. Every $C_4\\times C_4$ pair has $m=0$; the $45^\\circ$-offset coset is the only source of non-zero defect."
+                  },
+                  {
+                    "type": "table",
+                    "min_width": 680,
+                    "padding": 8,
+                    "columns": [
+                      {"key": "n", "label": "$n$", "align": "center"},
+                      {"key": "N", "label": "$N$", "align": "center"},
+                      {"key": "delta", "label": "$\\delta_{\\max}$", "align": "center"},
+                      {"key": "m", "label": "$\\max m$", "align": "center"},
+                      {"key": "ratio", "label": "$m/N$", "align": "center"},
+                      {"key": "Df", "label": "$\\|D\\|_F$", "align": "center"},
+                      {"key": "pairs", "label": "Non-zero pairs", "align": "center"}
+                    ],
+                    "rows": [
+                      {"cells": {"n": "14", "N": "196", "delta": "2.74", "m": "68", "ratio": "34.7%", "Df": "11.66", "pairs": "38/64"}},
+                      {"cells": {"n": "16", "N": "256", "delta": "3.15", "m": "80", "ratio": "31.2%", "Df": "12.65", "pairs": "34/64"}},
+                      {"cells": {"n": "24", "N": "576", "delta": "4.79", "m": "176", "ratio": "30.6%", "Df": "18.76", "pairs": "38/64"}},
+                      {"cells": {"n": "32", "N": "1024", "delta": "6.44", "m": "328", "ratio": "32.0%", "Df": "25.61", "pairs": "38/64"}}
+                    ]
+                  }
+                ]
               },
               {
-                "type": "paragraph",
-                "variant": "boxed",
-                "text": "Let the full EquiVLA policy be $\\pi(o)=\\mathcal{A}(\\mathcal{P}(o))$. Under the Lipschitz assumption, for every $g\\in G$ it satisfies:"
+                "type": "details",
+                "summary": "Proposition 3 — Equivariant Adapter",
+                "blocks": [
+                  {
+                    "type": "paragraph",
+                    "variant": "boxed",
+                    "text": "**Statement.** Let $\\widetilde{z}^{\\mathrm{eq}}$ be $G$-equivariant in the regular representation; let $s^{\\mathrm{inv}},s^{\\mathrm{lang}},s^{\\mathrm{vis}}$ be invariant; and let $W_g$ and $W_s$ be $G$-equivariant linear maps. Then"
+                  },
+                  {
+                    "type": "math",
+                    "tex": "z^{\\mathrm{out}}_{\\mathrm{eq}}=\\alpha^{\\mathrm{reg}}\\odot W_s(s^{\\mathrm{inv}}\\otimes\\mathbf{1}_{|G|})+(\\mathbf{1}-\\alpha^{\\mathrm{reg}})\\odot W_g(\\widetilde{z}^{\\mathrm{eq}})"
+                  },
+                  {
+                    "type": "paragraph",
+                    "variant": "boxed",
+                    "text": "is equivariant: $z^{\\mathrm{out}}_{\\mathrm{eq}}(g\\!\\cdot\\!x)=\\rho_{\\mathrm{reg}}(g)z^{\\mathrm{out}}_{\\mathrm{eq}}(x)$."
+                  },
+                  {
+                    "type": "heading",
+                    "text": "Proof",
+                    "size": 17,
+                    "margin_bottom": 8
+                  },
+                  {
+                    "type": "paragraph",
+                    "variant": "boxed",
+                    "text": "The gate $\\alpha=\\sigma(W_{\\mathrm{gate}}[s^{\\mathrm{lang}};s^{\\mathrm{vis}};\\bar z^{\\mathrm{eq}}])$ depends only on invariant inputs, so it is invariant. Its tiling $\\alpha^{\\mathrm{reg}}=\\alpha\\otimes\\mathbf{1}_{|G|}$ remains invariant because $\\rho_{\\mathrm{reg}}(g)$ only cyclically permutes group coordinates and fixes $\\mathbf{1}_{|G|}$."
+                  },
+                  {
+                    "type": "paragraph",
+                    "variant": "boxed",
+                    "text": "**Semantic branch.** The tiled semantic feature $s^{\\mathrm{inv}}\\otimes\\mathbf{1}_{|G|}$ is invariant in regular-representation space. Equivariance of $W_s$ therefore makes $W_s(s^{\\mathrm{inv}}\\otimes\\mathbf{1}_{|G|})$ invariant."
+                  },
+                  {
+                    "type": "paragraph",
+                    "variant": "boxed",
+                    "text": "**Equivariant branch.** By assumption, $W_g(\\rho_{\\mathrm{reg}}(g)\\widetilde z^{\\mathrm{eq}})=\\rho_{\\mathrm{reg}}(g)W_g(\\widetilde z^{\\mathrm{eq}})$."
+                  },
+                  {
+                    "type": "paragraph",
+                    "variant": "boxed",
+                    "text": "**Combination.** Since $\\alpha^{\\mathrm{reg}}$ is invariant and $\\rho_{\\mathrm{reg}}(g)$ is a coordinate permutation, Hadamard products commute with the action:"
+                  },
+                  {
+                    "type": "math",
+                    "tex": "\\rho_{\\mathrm{reg}}(g)[\\alpha^{\\mathrm{reg}}\\odot v]=\\alpha^{\\mathrm{reg}}\\odot\\rho_{\\mathrm{reg}}(g)v."
+                  },
+                  {
+                    "type": "paragraph",
+                    "variant": "boxed",
+                    "last": true,
+                    "text": "Applying this identity to both branches, using invariance of the semantic branch and equivariance of $W_g$, gives exactly the adapter output evaluated at $g\\!\\cdot\\!x$. $\\square$"
+                  }
+                ]
               },
               {
-                "type": "math",
-                "tex": "\\left\\|\\pi(g\\!\\cdot\\!o)-\\rho_a(g)\\pi(o)\\right\\| \\leq L\\,\\Delta\\,B(o), \\qquad B(o)=\\max_{h\\in G}\\left\\|f_\\theta(h\\!\\cdot\\!x)\\right\\|."
+                "type": "details",
+                "summary": "Proposition 4 — Flow-Matching Compatibility with Equivariance",
+                "blocks": [
+                  {
+                    "type": "paragraph",
+                    "variant": "boxed",
+                    "text": "**Statement.** Let $\\rho_a$ be the $SO(2)$ representation on action space, and suppose EquiActor implements a $G$-equivariant velocity field:"
+                  },
+                  {
+                    "type": "math",
+                    "tex": "v_\\theta\\!\\left(\\rho_a(g)a^k,k,\\widetilde A(g)z,\\rho(g)z^s\\right)=\\rho_a(g)v_\\theta(a^k,k,z,z^s),\\qquad\\forall g\\in G."
+                  },
+                  {
+                    "type": "list",
+                    "items": [
+                      "**(i)** The flow-matching loss is $G$-invariant in distribution: $\\mathcal L(g\\!\\cdot\\!o,\\rho_a(g)a_t)=\\mathcal L(o,a_t)$ in expectation over $\\epsilon$ and $k$.",
+                      "**(ii)** ODE integration is equivariant: $\\widehat a_t(g\\!\\cdot\\!o,\\rho(g)z^s,\\rho_a(g)\\epsilon)=\\rho_a(g)\\widehat a_t(o,z^s,\\epsilon)$."
+                    ],
+                    "color": "#3a4150",
+                    "margin_bottom": 12
+                  },
+                  {
+                    "type": "heading",
+                    "text": "Proof",
+                    "size": 17,
+                    "margin_bottom": 8
+                  },
+                  {
+                    "type": "paragraph",
+                    "variant": "boxed",
+                    "text": "**(i)** The noisy action $a^k=(1-k)\\epsilon+ka_t$ transforms linearly as $\\rho_a(g)a^k=(1-k)\\rho_a(g)\\epsilon+k\\rho_a(g)a_t$. Because $\\rho_a(g)$ is orthogonal and $\\epsilon\\sim\\mathcal N(0,I)$, rotational invariance gives $\\rho_a(g)\\epsilon\\sim\\mathcal N(0,I)$. The target velocity becomes $\\rho_a(g)(a_t-\\epsilon)$, and the predicted velocity transforms identically. Orthogonality preserves the squared norm, so the loss is unchanged under the simultaneous group action."
+                  },
+                  {
+                    "type": "paragraph",
+                    "variant": "boxed",
+                    "text": "**(ii)** For an ODE step $a^{k+\\Delta k}=a^k+\\Delta k\\,v_\\theta(a^k,k,\\ldots)$, apply $\\rho_a(g)$ to both sides and use velocity-field equivariance:"
+                  },
+                  {
+                    "type": "math",
+                    "tex": "\\rho_a(g)a^{k+\\Delta k}=\\rho_a(g)a^k+\\Delta k\\,v_\\theta\\!\\left(\\rho_a(g)a^k,k,\\ldots\\right)."
+                  },
+                  {
+                    "type": "paragraph",
+                    "variant": "boxed",
+                    "last": true,
+                    "text": "Induction over all integration steps propagates equivariance from the initial noise to the final action prediction. $\\square$"
+                  }
+                ]
               },
               {
-                "type": "paragraph",
-                "variant": "boxed",
-                "text": "Here, $\\rho_a$ is the $SO(2)$ action representation, $\\Delta$ is the representation defect of the spatial alignment $\\widetilde{\\tau}$, and $x$ is the image component of observation $o$."
+                "type": "details",
+                "summary": "Corollary 1 — End-to-End Equivariance",
+                "blocks": [
+                  {
+                    "type": "heading",
+                    "text": "Assumption — Lipschitz Continuity of EquiActor",
+                    "size": 17,
+                    "margin_bottom": 8
+                  },
+                  {
+                    "type": "paragraph",
+                    "variant": "boxed",
+                    "text": "For any visual contexts $z_1,z_2$ with shared proprioceptive state and noise, EquiActor $\\mathcal A$ is $L$-Lipschitz:"
+                  },
+                  {
+                    "type": "math",
+                    "tex": "\\left\\|\\mathcal A(z_1)-\\mathcal A(z_2)\\right\\|\\leq L\\left\\|z_1-z_2\\right\\|."
+                  },
+                  {
+                    "type": "paragraph",
+                    "variant": "small",
+                    "text": "With bounded weights, $L$ is governed by attention and MLP layer norms and may be controlled by spectral normalization or weight decay."
+                  },
+                  {
+                    "type": "paragraph",
+                    "variant": "boxed",
+                    "text": "**Statement.** For the full policy $\\pi(o)=\\mathcal A(\\mathcal P(o))$,"
+                  },
+                  {
+                    "type": "math",
+                    "tex": "\\left\\|\\pi(g\\!\\cdot\\!o)-\\rho_a(g)\\pi(o)\\right\\|\\leq L\\Delta B(o),\\qquad B(o)=\\max_{h\\in G}\\left\\|f_\\theta(h\\!\\cdot\\!x)\\right\\|."
+                  },
+                  {
+                    "type": "heading",
+                    "text": "Proof",
+                    "size": 17,
+                    "margin_bottom": 8
+                  },
+                  {
+                    "type": "paragraph",
+                    "variant": "boxed",
+                    "text": "By Theorem 1, write $\\mathcal P(g\\!\\cdot\\!o)=\\widetilde A(g)\\mathcal P(o)+\\varepsilon$, with $\\|\\varepsilon\\|\\leq\\Delta B(o)$. Proposition 3 preserves equivariance through the Adapter, while Proposition 4 gives exact equivariance of EquiActor. Therefore"
+                  },
+                  {
+                    "type": "math",
+                    "tex": "\\begin{aligned} \\pi(g\\!\\cdot\\!o)&=\\mathcal A\\!\\left(\\widetilde A(g)\\mathcal P(o)+\\varepsilon\\right)\\\\ &=\\underbrace{\\mathcal A\\!\\left(\\widetilde A(g)\\mathcal P(o)\\right)}_{=\\,\\rho_a(g)\\pi(o)}\\\\ &\\quad+\\left[\\mathcal A\\!\\left(\\widetilde A(g)\\mathcal P(o)+\\varepsilon\\right)-\\mathcal A\\!\\left(\\widetilde A(g)\\mathcal P(o)\\right)\\right]. \\end{aligned}"
+                  },
+                  {
+                    "type": "paragraph",
+                    "variant": "boxed",
+                    "last": true,
+                    "text": "The first term is exactly $\\rho_a(g)\\pi(o)$. The Lipschitz assumption bounds the bracketed remainder by $L\\|\\varepsilon\\|\\leq L\\Delta B(o)$, proving the result. $\\square$"
+                  }
+                ]
               },
               {
-                "type": "heading",
-                "text": "Proof",
-                "size": 18,
-                "margin_bottom": 10
-              },
-              {
-                "type": "paragraph",
-                "variant": "boxed",
-                "text": "From the approximate-equivariance theorem for EquiPerceptor, write"
-              },
-              {
-                "type": "math",
-                "tex": "\\mathcal{P}(g\\!\\cdot\\!o)=\\widetilde{A}(g)\\mathcal{P}(o)+\\varepsilon, \\qquad \\left\\|\\varepsilon\\right\\|\\leq\\Delta\\,B(o)."
-              },
-              {
-                "type": "paragraph",
-                "variant": "boxed",
-                "text": "Because the Equivariant Adapter preserves equivariance and EquiActor is exactly $G$-equivariant,"
-              },
-              {
-                "type": "math",
-                "tex": "\\begin{aligned} \\pi(g\\!\\cdot\\!o) &= \\mathcal{A}\\!\\left(\\widetilde{A}(g)\\mathcal{P}(o)+\\varepsilon\\right) \\\\ &= \\underbrace{\\mathcal{A}\\!\\left(\\widetilde{A}(g)\\mathcal{P}(o)\\right)}_{=\\,\\rho_a(g)\\pi(o)} \\\\ &\\quad + \\Big[\\mathcal{A}\\!\\left(\\widetilde{A}(g)\\mathcal{P}(o)+\\varepsilon\\right)-\\mathcal{A}\\!\\left(\\widetilde{A}(g)\\mathcal{P}(o)\\right)\\Big]. \\end{aligned}"
-              },
-              {
-                "type": "paragraph",
-                "variant": "boxed",
-                "text": "The first term is exactly $\\rho_a(g)\\pi(o)$. By the Lipschitz property, the norm of the bracketed remainder is bounded by"
-              },
-              {
-                "type": "math",
-                "tex": "L\\left\\|\\varepsilon\\right\\| \\leq L\\,\\Delta\\,B(o),"
-              },
-              {
-                "type": "paragraph",
-                "variant": "boxed",
-                "last": true,
-                "text": "which proves the end-to-end bound. The result composes three supporting guarantees: approximate equivariance of EquiPerceptor, equivariance preservation by the Adapter, and exact equivariance of EquiActor's velocity field and ODE integration. $\\square$"
+                "type": "details",
+                "summary": "Corollary 2 — Sample Complexity Benefit of Equivariance",
+                "blocks": [
+                  {
+                    "type": "paragraph",
+                    "variant": "boxed",
+                    "text": "Let $\\mathcal F$ be a policy function class and define its $G$-equivariant subclass by"
+                  },
+                  {
+                    "type": "math",
+                    "tex": "\\mathcal F_G=\\left\\{f\\in\\mathcal F:f(g\\!\\cdot\\!o)=\\rho_a(g)f(o)\\ \\forall g\\in G\\right\\}."
+                  },
+                  {
+                    "type": "paragraph",
+                    "variant": "boxed",
+                    "text": "The empirical Rademacher complexity satisfies"
+                  },
+                  {
+                    "type": "math",
+                    "tex": "\\widehat{\\mathcal R}_n(\\mathcal F_G)\\leq\\frac{1}{|G|}\\widehat{\\mathcal R}_n(\\mathcal F)."
+                  },
+                  {
+                    "type": "paragraph",
+                    "variant": "boxed",
+                    "text": "By standard generalization bounds, the equivariant class therefore requires a factor of $|G|$ fewer samples to reach the same generalization error, giving up to an $8\\times$ reduction for $C_8$. For an approximately equivariant pipeline satisfying $\\|\\varepsilon\\|\\leq\\epsilon_0$, the appendix states the modulated gap"
+                  },
+                  {
+                    "type": "math",
+                    "tex": "\\frac{1}{|G|}\\widehat{\\mathcal R}_n(\\mathcal F)+\\mathcal O(\\epsilon_0),"
+                  },
+                  {
+                    "type": "paragraph",
+                    "variant": "small",
+                    "last": true,
+                    "text": "which interpolates between the fully equivariant benefit at $\\epsilon_0=0$ and the unconstrained regime as the residual grows."
+                  }
+                ]
               }
             ]
           }
