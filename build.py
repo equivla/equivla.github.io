@@ -147,6 +147,21 @@ def highlight_box_block(b):
             % (THEME['accent_bg'], THEME['ink'], inline(b['title']), inner))
 
 
+def details_block(b):
+    inner = '\n'.join(render_block(x, default_variant='boxed') for x in b['blocks'])
+    return (
+        '      <details style="border: 1px solid #d8e5fb; border-radius: 16px; '
+        'background: #fbfdff; margin-top: 18px; overflow: hidden;">\n'
+        '        <summary style="cursor: pointer; padding: 18px 22px; font-size: 16px; '
+        f'font-weight: 600; color: {THEME["ink"]}; background: {THEME["accent_bg"]}; '
+        'list-style-position: inside;">'
+        f'{inline(b["summary"])}</summary>\n'
+        '        <div style="padding: 22px 26px 24px;">\n'
+        f'{inner}\n'
+        '        </div>\n'
+        '      </details>')
+
+
 def figure_pdf_block(b):
     max_width = b.get('max_width')
     figure_style = ('margin: 0 auto 48px; max-width: %dpx;' % max_width
@@ -300,6 +315,7 @@ BLOCKS = {
     'callout': callout_block,
     'card': card_block,
     'highlight_box': highlight_box_block,
+    'details': details_block,
     'figure_pdf': figure_pdf_block,
     'table': table_block,
     'task_gallery': task_gallery_block,

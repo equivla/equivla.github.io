@@ -209,6 +209,61 @@
             "text": "EquiActor's velocity field is exactly $G$-equivariant when its context transforms as specified. The full relation is approximate because discrete image rotations and nearest-neighbor alignment can move rotated patch centers off the ViT grid; alignment is exact for grid-preserving rotations such as $C_4$ on a square grid."
           }
         ]
+      },
+      {
+        "type": "details",
+        "summary": "Theorem & Proof Sketch — End-to-End Equivariance Bound",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "variant": "boxed",
+            "text": "**Assumption.** Let the EquiActor map $\\mathcal{A}$ be $L$-Lipschitz with respect to its visual context: $\\|\\mathcal{A}(z_1)-\\mathcal{A}(z_2)\\| \\leq L\\|z_1-z_2\\|$."
+          },
+          {
+            "type": "callout",
+            "blocks": [
+              {
+                "type": "paragraph",
+                "variant": "boxed",
+                "text": "**End-to-End Equivariance Bound.** For the full policy $\\pi(o)=\\mathcal{A}(\\mathcal{P}(o))$ and every $g\\in G$,"
+              },
+              {
+                "type": "math",
+                "tex": "\\left\\|\\pi(g\\!\\cdot\\!o)-\\rho_a(g)\\pi(o)\\right\\| \\;\\leq\\; L\\,\\Delta\\,B(o)"
+              },
+              {
+                "type": "paragraph",
+                "variant": "small",
+                "text": "Here, $\\Delta$ is the spatial representation defect introduced by patch-grid alignment, $B(o)=\\max_{h\\in G}\\|f_\\theta(h\\!\\cdot\\!x)\\|$ bounds the ViT feature magnitude, and $L$ measures EquiActor's sensitivity to visual-context perturbations."
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "variant": "boxed",
+            "text": "**Proof sketch.** Token-level Frame Averaging gives an approximately equivariant perception map whose residual is bounded by the representation defect:"
+          },
+          {
+            "type": "math",
+            "tex": "\\mathcal{P}(g\\!\\cdot\\!o)=\\widetilde{A}(g)\\mathcal{P}(o)+\\varepsilon, \\qquad \\|\\varepsilon\\|\\leq\\Delta\\,B(o)."
+          },
+          {
+            "type": "list",
+            "items": [
+              "The **Equivariant Adapter** preserves the transformation law of the perception features.",
+              "The **EquiActor velocity field and ODE integration** are exactly $G$-equivariant when their context transforms as specified.",
+              "Therefore the equivariant component maps exactly to $\\rho_a(g)\\pi(o)$; only the residual $\\varepsilon$ remains.",
+              "Applying the $L$-Lipschitz property bounds its effect by $L\\|\\varepsilon\\|\\leq L\\Delta B(o)$, proving the result."
+            ],
+            "color": "#3a4150",
+            "margin_bottom": 14
+          },
+          {
+            "type": "paragraph",
+            "variant": "small",
+            "text": "**Interpretation.** For grid-preserving rotations such as $C_4$ on a square patch grid, $\\Delta=0$ and the bound becomes exact under the stated assumptions. For $C_8$, the $45^\\circ$-offset rotations introduce a small discretization residual. Empirically, EquiVLA reduces measured equivariance error from $7.754$ to $0.284$ — a $27.3\\times$ reduction."
+          }
+        ]
       }
     ]
   },
