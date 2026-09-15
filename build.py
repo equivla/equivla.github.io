@@ -390,6 +390,26 @@ def build(data):
     method = data['method']
     results = data['results']
     vid = data['video_section']
+    if vid.get('src'):
+        video_markup = (
+            '      <figure style="margin: 0;">\n'
+            '        <video controls style="width: 100%; border-radius: 16px; border: 1px solid #e4e8f0; display: block; background: #0a0b0d;">\n'
+            f'          <source src="{vid["src"]}" type="video/mp4">\n'
+            '        </video>\n'
+            '        <figcaption style="text-align: center; font-size: 14px; color: #7b8294; margin-top: 14px;">'
+            f'{caption(vid["caption"])}</figcaption>\n'
+            '      </figure>')
+    else:
+        video_markup = (
+            '      <div style="min-height: 320px; border: 1px dashed #c8d7ee; border-radius: 16px; '
+            f'background: linear-gradient(180deg, #f8fbff, {THEME["accent_bg"]}); display: flex; '
+            'align-items: center; justify-content: center; text-align: center; padding: 42px 28px;">\n'
+            '        <div style="max-width: 520px;">\n'
+            f'          <div style="font-size: 38px; margin-bottom: 12px; color: {THEME["accent"]};">▶</div>\n'
+            f'          <h3 style="font-family: \'Newsreader\', serif; font-size: 24px; font-weight: 600; color: {THEME["ink"]}; margin: 0 0 10px;">{inline(vid["placeholder_title"])}</h3>\n'
+            f'          <p style="font-size: 15px; color: {THEME["muted"]}; line-height: 1.7; margin: 0;">{inline(vid["placeholder_text"])}</p>\n'
+            '        </div>\n'
+            '      </div>')
 
     return f'''<!DOCTYPE html>
 <html>
@@ -471,12 +491,7 @@ def build(data):
     <!-- VIDEO -->
     <section id="{vid['id']}" style="margin-bottom: 64px; scroll-margin-top: 80px;">
 {section_heading(vid['heading'])}
-      <figure style="margin: 0;">
-        <video controls style="width: 100%; border-radius: 16px; border: 1px solid #e4e8f0; display: block; background: #0a0b0d;">
-          <source src="{vid['src']}" type="video/mp4">
-        </video>
-        <figcaption style="text-align: center; font-size: 14px; color: #7b8294; margin-top: 14px;">{caption(vid['caption'])}</figcaption>
-      </figure>
+{video_markup}
     </section>
 
     <footer style="border-top: 1px solid {THEME['line']}; padding: 36px 0 64px; text-align: center;">

@@ -68,7 +68,7 @@
       {
         "icon": "▶",
         "label": "Video",
-        "note": null,
+        "note": "editing",
         "href": "#video",
         "variant": "secondary"
       }
@@ -262,6 +262,91 @@
             "type": "paragraph",
             "variant": "small",
             "text": "**Interpretation.** For grid-preserving rotations such as $C_4$ on a square patch grid, $\\Delta=0$ and the bound becomes exact under the stated assumptions. For $C_8$, the $45^\\circ$-offset rotations introduce a small discretization residual. Empirically, EquiVLA reduces measured equivariance error from $7.754$ to $0.284$ — a $27.3\\times$ reduction."
+          },
+          {
+            "type": "details",
+            "summary": "View Full Proof",
+            "blocks": [
+              {
+                "type": "heading",
+                "text": "Assumption — Lipschitz Continuity of EquiActor",
+                "size": 18,
+                "margin_bottom": 10
+              },
+              {
+                "type": "paragraph",
+                "variant": "boxed",
+                "text": "For any two visual-context representations $z_1$ and $z_2$ with shared proprioceptive state and noise, EquiActor $\\mathcal{A}$ is $L$-Lipschitz:"
+              },
+              {
+                "type": "math",
+                "tex": "\\left\\|\\mathcal{A}(z_1)-\\mathcal{A}(z_2)\\right\\| \\leq L\\left\\|z_1-z_2\\right\\|."
+              },
+              {
+                "type": "paragraph",
+                "variant": "small",
+                "text": "This is the standard regularity assumption used in the appendix: with bounded weights, $L$ is controlled by the attention and MLP layer norms."
+              },
+              {
+                "type": "heading",
+                "text": "End-to-End Equivariance Theorem",
+                "size": 18,
+                "margin_bottom": 10
+              },
+              {
+                "type": "paragraph",
+                "variant": "boxed",
+                "text": "Let the full EquiVLA policy be $\\pi(o)=\\mathcal{A}(\\mathcal{P}(o))$. Under the Lipschitz assumption, for every $g\\in G$ it satisfies:"
+              },
+              {
+                "type": "math",
+                "tex": "\\left\\|\\pi(g\\!\\cdot\\!o)-\\rho_a(g)\\pi(o)\\right\\| \\leq L\\,\\Delta\\,B(o), \\qquad B(o)=\\max_{h\\in G}\\left\\|f_\\theta(h\\!\\cdot\\!x)\\right\\|."
+              },
+              {
+                "type": "paragraph",
+                "variant": "boxed",
+                "text": "Here, $\\rho_a$ is the $SO(2)$ action representation, $\\Delta$ is the representation defect of the spatial alignment $\\widetilde{\\tau}$, and $x$ is the image component of observation $o$."
+              },
+              {
+                "type": "heading",
+                "text": "Proof",
+                "size": 18,
+                "margin_bottom": 10
+              },
+              {
+                "type": "paragraph",
+                "variant": "boxed",
+                "text": "From the approximate-equivariance theorem for EquiPerceptor, write"
+              },
+              {
+                "type": "math",
+                "tex": "\\mathcal{P}(g\\!\\cdot\\!o)=\\widetilde{A}(g)\\mathcal{P}(o)+\\varepsilon, \\qquad \\left\\|\\varepsilon\\right\\|\\leq\\Delta\\,B(o)."
+              },
+              {
+                "type": "paragraph",
+                "variant": "boxed",
+                "text": "Because the Equivariant Adapter preserves equivariance and EquiActor is exactly $G$-equivariant,"
+              },
+              {
+                "type": "math",
+                "tex": "\\begin{aligned} \\pi(g\\!\\cdot\\!o) &= \\mathcal{A}\\!\\left(\\widetilde{A}(g)\\mathcal{P}(o)+\\varepsilon\\right) \\\\ &= \\underbrace{\\mathcal{A}\\!\\left(\\widetilde{A}(g)\\mathcal{P}(o)\\right)}_{=\\,\\rho_a(g)\\pi(o)} \\\\ &\\quad + \\Big[\\mathcal{A}\\!\\left(\\widetilde{A}(g)\\mathcal{P}(o)+\\varepsilon\\right)-\\mathcal{A}\\!\\left(\\widetilde{A}(g)\\mathcal{P}(o)\\right)\\Big]. \\end{aligned}"
+              },
+              {
+                "type": "paragraph",
+                "variant": "boxed",
+                "text": "The first term is exactly $\\rho_a(g)\\pi(o)$. By the Lipschitz property, the norm of the bracketed remainder is bounded by"
+              },
+              {
+                "type": "math",
+                "tex": "L\\left\\|\\varepsilon\\right\\| \\leq L\\,\\Delta\\,B(o),"
+              },
+              {
+                "type": "paragraph",
+                "variant": "boxed",
+                "last": true,
+                "text": "which proves the end-to-end bound. The result composes three supporting guarantees: approximate equivariance of EquiPerceptor, equivariance preservation by the Adapter, and exact equivariance of EquiActor's velocity field and ODE integration. $\\square$"
+              }
+            ]
           }
         ]
       }
@@ -1017,8 +1102,9 @@
   "video_section": {
     "id": "video",
     "heading": "Video",
-    "src": "https://github.com/equivla/equivla/releases/download/v1.0/EquiVLA.mp4",
-    "caption": "**Video.** Overview of EquiVLA — framework motivation, architecture, and real-robot demonstrations across all five tasks."
+    "src": null,
+    "placeholder_title": "Project video is being updated",
+    "placeholder_text": "A revised overview video with the latest method, simulation results, and real-robot demonstrations will be available soon."
   },
   "footer": {
     "brand": {

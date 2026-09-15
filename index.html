@@ -50,7 +50,7 @@
       <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px;">
         <span style="display: inline-flex; align-items: center; gap: 8px; padding: 11px 20px; border-radius: 10px; background: #15171d; color: #fff; font-size: 14.5px; font-weight: 500; opacity: 0.5; cursor: not-allowed;">📄 Paper <span style="font-size: 11px; font-weight: 600; opacity: 0.8;">soon</span></span>
         <span style="display: inline-flex; align-items: center; gap: 8px; padding: 11px 20px; border-radius: 10px; background: #fff; border: 1px solid #d9dce3; color: #2b2f3a; font-size: 14.5px; font-weight: 500; opacity: 0.55; cursor: not-allowed;">💻 Code <span style="font-size: 11px; font-weight: 600; color: #8a909e;">soon</span></span>
-        <a href="#video" style="display: inline-flex; align-items: center; gap: 8px; padding: 11px 20px; border-radius: 10px; background: #fff; border: 1px solid #d9dce3; color: #2b2f3a; font-size: 14.5px; font-weight: 500; text-decoration: none;">▶ Video</a>
+        <a href="#video" style="display: inline-flex; align-items: center; gap: 8px; padding: 11px 20px; border-radius: 10px; background: #fff; border: 1px solid #d9dce3; color: #2b2f3a; font-size: 14.5px; font-weight: 500; text-decoration: none;">▶ Video <span style="font-size: 11px; font-weight: 600; opacity: 0.8;">editing</span></a>
       </div>
     </header>
 
@@ -160,6 +160,27 @@
         <li>Applying the $L$-Lipschitz property bounds its effect by $L\|\varepsilon\|\leq L\Delta B(o)$, proving the result.</li>
       </ul>
       <p style="font-size: 15px; color: #5b6170; margin: 6px 0 0; line-height: 1.65;"><strong>Interpretation.</strong> For grid-preserving rotations such as $C_4$ on a square patch grid, $\Delta=0$ and the bound becomes exact under the stated assumptions. For $C_8$, the $45^\circ$-offset rotations introduce a small discretization residual. Empirically, EquiVLA reduces measured equivariance error from $7.754$ to $0.284$ — a $27.3\times$ reduction.</p>
+      <details style="border: 1px solid #d8e5fb; border-radius: 16px; background: #fbfdff; margin-top: 18px; overflow: hidden;">
+        <summary style="cursor: pointer; padding: 18px 22px; font-size: 16px; font-weight: 600; color: #15171d; background: #eef4fe; list-style-position: inside;">View Full Proof</summary>
+        <div style="padding: 22px 26px 24px;">
+      <h3 style="font-family: 'Newsreader', serif; font-size: 18px; font-weight: 600; margin: 0 0 10px; color: #15171d;">Assumption — Lipschitz Continuity of EquiActor</h3>
+      <p style="font-size: 15.5px; color: #2b303c; margin: 0 0 12px; line-height: 1.65;">For any two visual-context representations $z_1$ and $z_2$ with shared proprioceptive state and noise, EquiActor $\mathcal{A}$ is $L$-Lipschitz:</p>
+        $$\left\|\mathcal{A}(z_1)-\mathcal{A}(z_2)\right\| \leq L\left\|z_1-z_2\right\|.$$
+      <p style="font-size: 15px; color: #5b6170; margin: 6px 0 0; line-height: 1.65;">This is the standard regularity assumption used in the appendix: with bounded weights, $L$ is controlled by the attention and MLP layer norms.</p>
+      <h3 style="font-family: 'Newsreader', serif; font-size: 18px; font-weight: 600; margin: 0 0 10px; color: #15171d;">End-to-End Equivariance Theorem</h3>
+      <p style="font-size: 15.5px; color: #2b303c; margin: 0 0 12px; line-height: 1.65;">Let the full EquiVLA policy be $\pi(o)=\mathcal{A}(\mathcal{P}(o))$. Under the Lipschitz assumption, for every $g\in G$ it satisfies:</p>
+        $$\left\|\pi(g\!\cdot\!o)-\rho_a(g)\pi(o)\right\| \leq L\,\Delta\,B(o), \qquad B(o)=\max_{h\in G}\left\|f_\theta(h\!\cdot\!x)\right\|.$$
+      <p style="font-size: 15.5px; color: #2b303c; margin: 0 0 12px; line-height: 1.65;">Here, $\rho_a$ is the $SO(2)$ action representation, $\Delta$ is the representation defect of the spatial alignment $\widetilde{\tau}$, and $x$ is the image component of observation $o$.</p>
+      <h3 style="font-family: 'Newsreader', serif; font-size: 18px; font-weight: 600; margin: 0 0 10px; color: #15171d;">Proof</h3>
+      <p style="font-size: 15.5px; color: #2b303c; margin: 0 0 12px; line-height: 1.65;">From the approximate-equivariance theorem for EquiPerceptor, write</p>
+        $$\mathcal{P}(g\!\cdot\!o)=\widetilde{A}(g)\mathcal{P}(o)+\varepsilon, \qquad \left\|\varepsilon\right\|\leq\Delta\,B(o).$$
+      <p style="font-size: 15.5px; color: #2b303c; margin: 0 0 12px; line-height: 1.65;">Because the Equivariant Adapter preserves equivariance and EquiActor is exactly $G$-equivariant,</p>
+        $$\begin{aligned} \pi(g\!\cdot\!o) &= \mathcal{A}\!\left(\widetilde{A}(g)\mathcal{P}(o)+\varepsilon\right) \\ &= \underbrace{\mathcal{A}\!\left(\widetilde{A}(g)\mathcal{P}(o)\right)}_{=\,\rho_a(g)\pi(o)} \\ &\quad + \Big[\mathcal{A}\!\left(\widetilde{A}(g)\mathcal{P}(o)+\varepsilon\right)-\mathcal{A}\!\left(\widetilde{A}(g)\mathcal{P}(o)\right)\Big]. \end{aligned}$$
+      <p style="font-size: 15.5px; color: #2b303c; margin: 0 0 12px; line-height: 1.65;">The first term is exactly $\rho_a(g)\pi(o)$. By the Lipschitz property, the norm of the bracketed remainder is bounded by</p>
+        $$L\left\|\varepsilon\right\| \leq L\,\Delta\,B(o),$$
+      <p style="font-size: 15.5px; color: #2b303c; margin: 0; line-height: 1.65;">which proves the end-to-end bound. The result composes three supporting guarantees: approximate equivariance of EquiPerceptor, equivariance preservation by the Adapter, and exact equivariance of EquiActor's velocity field and ODE integration. $\square$</p>
+        </div>
+      </details>
         </div>
       </details>
     </section>
@@ -586,12 +607,13 @@
     <!-- VIDEO -->
     <section id="video" style="margin-bottom: 64px; scroll-margin-top: 80px;">
       <h2 style="font-family: 'Newsreader', serif; font-size: 13px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #2A6FDB; margin: 0 0 18px;">Video</h2>
-      <figure style="margin: 0;">
-        <video controls style="width: 100%; border-radius: 16px; border: 1px solid #e4e8f0; display: block; background: #0a0b0d;">
-          <source src="https://github.com/equivla/equivla/releases/download/v1.0/EquiVLA.mp4" type="video/mp4">
-        </video>
-        <figcaption style="text-align: center; font-size: 14px; color: #7b8294; margin-top: 14px;"><strong style="color: #4a5060;">Video.</strong> Overview of EquiVLA — framework motivation, architecture, and real-robot demonstrations across all five tasks.</figcaption>
-      </figure>
+      <div style="min-height: 320px; border: 1px dashed #c8d7ee; border-radius: 16px; background: linear-gradient(180deg, #f8fbff, #eef4fe); display: flex; align-items: center; justify-content: center; text-align: center; padding: 42px 28px;">
+        <div style="max-width: 520px;">
+          <div style="font-size: 38px; margin-bottom: 12px; color: #2A6FDB;">▶</div>
+          <h3 style="font-family: 'Newsreader', serif; font-size: 24px; font-weight: 600; color: #15171d; margin: 0 0 10px;">Project video is being updated</h3>
+          <p style="font-size: 15px; color: #5b6170; line-height: 1.7; margin: 0;">A revised overview video with the latest method, simulation results, and real-robot demonstrations will be available soon.</p>
+        </div>
+      </div>
     </section>
 
     <footer style="border-top: 1px solid #ececf0; padding: 36px 0 64px; text-align: center;">
