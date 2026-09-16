@@ -68,7 +68,7 @@
       {
         "icon": "▶",
         "label": "Video",
-        "note": "editing",
+        "note": null,
         "href": "#video",
         "variant": "secondary"
       }
@@ -507,19 +507,87 @@
                     "min_width": 680,
                     "padding": 8,
                     "columns": [
-                      {"key": "n", "label": "$n$", "align": "center"},
-                      {"key": "N", "label": "$N$", "align": "center"},
-                      {"key": "delta", "label": "$\\delta_{\\max}$", "align": "center"},
-                      {"key": "m", "label": "$\\max m$", "align": "center"},
-                      {"key": "ratio", "label": "$m/N$", "align": "center"},
-                      {"key": "Df", "label": "$\\|D\\|_F$", "align": "center"},
-                      {"key": "pairs", "label": "Non-zero pairs", "align": "center"}
+                      {
+                        "key": "n",
+                        "label": "$n$",
+                        "align": "center"
+                      },
+                      {
+                        "key": "N",
+                        "label": "$N$",
+                        "align": "center"
+                      },
+                      {
+                        "key": "delta",
+                        "label": "$\\delta_{\\max}$",
+                        "align": "center"
+                      },
+                      {
+                        "key": "m",
+                        "label": "$\\max m$",
+                        "align": "center"
+                      },
+                      {
+                        "key": "ratio",
+                        "label": "$m/N$",
+                        "align": "center"
+                      },
+                      {
+                        "key": "Df",
+                        "label": "$\\|D\\|_F$",
+                        "align": "center"
+                      },
+                      {
+                        "key": "pairs",
+                        "label": "Non-zero pairs",
+                        "align": "center"
+                      }
                     ],
                     "rows": [
-                      {"cells": {"n": "14", "N": "196", "delta": "2.74", "m": "68", "ratio": "34.7%", "Df": "11.66", "pairs": "38/64"}},
-                      {"cells": {"n": "16", "N": "256", "delta": "3.15", "m": "80", "ratio": "31.2%", "Df": "12.65", "pairs": "34/64"}},
-                      {"cells": {"n": "24", "N": "576", "delta": "4.79", "m": "176", "ratio": "30.6%", "Df": "18.76", "pairs": "38/64"}},
-                      {"cells": {"n": "32", "N": "1024", "delta": "6.44", "m": "328", "ratio": "32.0%", "Df": "25.61", "pairs": "38/64"}}
+                      {
+                        "cells": {
+                          "n": "14",
+                          "N": "196",
+                          "delta": "2.74",
+                          "m": "68",
+                          "ratio": "34.7%",
+                          "Df": "11.66",
+                          "pairs": "38/64"
+                        }
+                      },
+                      {
+                        "cells": {
+                          "n": "16",
+                          "N": "256",
+                          "delta": "3.15",
+                          "m": "80",
+                          "ratio": "31.2%",
+                          "Df": "12.65",
+                          "pairs": "34/64"
+                        }
+                      },
+                      {
+                        "cells": {
+                          "n": "24",
+                          "N": "576",
+                          "delta": "4.79",
+                          "m": "176",
+                          "ratio": "30.6%",
+                          "Df": "18.76",
+                          "pairs": "38/64"
+                        }
+                      },
+                      {
+                        "cells": {
+                          "n": "32",
+                          "N": "1024",
+                          "delta": "6.44",
+                          "m": "328",
+                          "ratio": "32.0%",
+                          "Df": "25.61",
+                          "pairs": "38/64"
+                        }
+                      }
                     ]
                   }
                 ]
@@ -1481,9 +1549,8 @@
   "video_section": {
     "id": "video",
     "heading": "Video",
-    "src": null,
-    "placeholder_title": "Project video is being updated",
-    "placeholder_text": "A revised overview video with the latest method, simulation results, and real-robot demonstrations will be available soon."
+    "src": "https://github.com/equivla/equivla.github.io/releases/download/v1.1/EquiVLA.mp4",
+    "caption": "EquiVLA overview: method, simulation results, and real-robot demonstrations."
   },
   "footer": {
     "brand": {

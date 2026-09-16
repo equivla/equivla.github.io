@@ -50,7 +50,7 @@
       <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px;">
         <span style="display: inline-flex; align-items: center; gap: 8px; padding: 11px 20px; border-radius: 10px; background: #15171d; color: #fff; font-size: 14.5px; font-weight: 500; opacity: 0.5; cursor: not-allowed;">📄 Paper <span style="font-size: 11px; font-weight: 600; opacity: 0.8;">soon</span></span>
         <span style="display: inline-flex; align-items: center; gap: 8px; padding: 11px 20px; border-radius: 10px; background: #fff; border: 1px solid #d9dce3; color: #2b2f3a; font-size: 14.5px; font-weight: 500; opacity: 0.55; cursor: not-allowed;">💻 Code <span style="font-size: 11px; font-weight: 600; color: #8a909e;">soon</span></span>
-        <a href="#video" style="display: inline-flex; align-items: center; gap: 8px; padding: 11px 20px; border-radius: 10px; background: #fff; border: 1px solid #d9dce3; color: #2b2f3a; font-size: 14.5px; font-weight: 500; text-decoration: none;">▶ Video <span style="font-size: 11px; font-weight: 600; opacity: 0.8;">editing</span></a>
+        <a href="#video" style="display: inline-flex; align-items: center; gap: 8px; padding: 11px 20px; border-radius: 10px; background: #fff; border: 1px solid #d9dce3; color: #2b2f3a; font-size: 14.5px; font-weight: 500; text-decoration: none;">▶ Video</a>
       </div>
     </header>
 
@@ -766,13 +766,12 @@
     <!-- VIDEO -->
     <section id="video" style="margin-bottom: 64px; scroll-margin-top: 80px;">
       <h2 style="font-family: 'Newsreader', serif; font-size: 13px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #2A6FDB; margin: 0 0 18px;">Video</h2>
-      <div style="min-height: 320px; border: 1px dashed #c8d7ee; border-radius: 16px; background: linear-gradient(180deg, #f8fbff, #eef4fe); display: flex; align-items: center; justify-content: center; text-align: center; padding: 42px 28px;">
-        <div style="max-width: 520px;">
-          <div style="font-size: 38px; margin-bottom: 12px; color: #2A6FDB;">▶</div>
-          <h3 style="font-family: 'Newsreader', serif; font-size: 24px; font-weight: 600; color: #15171d; margin: 0 0 10px;">Project video is being updated</h3>
-          <p style="font-size: 15px; color: #5b6170; line-height: 1.7; margin: 0;">A revised overview video with the latest method, simulation results, and real-robot demonstrations will be available soon.</p>
-        </div>
-      </div>
+      <figure style="margin: 0;">
+        <video controls style="width: 100%; border-radius: 16px; border: 1px solid #e4e8f0; display: block; background: #0a0b0d;">
+          <source src="https://github.com/equivla/equivla.github.io/releases/download/v1.1/EquiVLA.mp4" type="video/mp4">
+        </video>
+        <figcaption style="text-align: center; font-size: 14px; color: #7b8294; margin-top: 14px;">EquiVLA overview: method, simulation results, and real-robot demonstrations.</figcaption>
+      </figure>
     </section>
 
     <footer style="border-top: 1px solid #ececf0; padding: 36px 0 64px; text-align: center;">
