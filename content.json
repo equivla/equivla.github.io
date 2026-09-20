@@ -1549,7 +1549,7 @@
   "video_section": {
     "id": "video",
     "heading": "Video",
-    "src": "https://github.com/equivla/equivla.github.io/releases/download/v1.1/EquiVLA.mp4",
+    "src": "https://github.com/equivla/equivla.github.io/releases/download/v1.2/EquiVLA.mp4",
     "caption": "EquiVLA overview: method, simulation results, and real-robot demonstrations."
   },
   "footer": {
